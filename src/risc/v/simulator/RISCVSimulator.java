@@ -15,6 +15,10 @@ public class RISCVSimulator {
     
 public static Map <String, Integer> Memory = new HashMap<>(); // Memory
 public static ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0));
+
+//
+
+
     /**
      * @param args the command line arguments
      */
@@ -43,18 +47,47 @@ public static ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0
         reg.add(regd, imm);
      }
    
-    public  void addi (String instr){
+   
+   // 18
+    public  void SW (String instr){
    String[] parts = instr.split("[,\\s]+");
-        int regd = 0, regs = 0, imm = 0;
-        for (int i = 1; i < parts.length; i++) {
-            String part = parts[i];
-            if (part.startsWith("x")) {
-              if (regd == 0) {regd = Integer.parseInt(part.substring(1));}
-              else {regs = Integer.parseInt(part.substring(1));}
-            } else {imm = Integer.parseInt(part);}
-        }
-        reg.add(regd,reg.get(regs)+imm);
         
+        String value_reg = parts[1].substring(1);
+        int value_reg_int = Integer.parseInt(value_reg);
+        int value = reg.get(value_reg_int);
+        System.out.println("VALUE IN SOURCE REG " + value + "\n" );
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        System.out.println("OFFset " + off_set+ "\n");
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        System.out.println("BASE addr  " + base_addr + "\n");
+        
+    }
+    
+   // 19
+    public  void addi (String instr){
+        String[] assembly_line_split = instr.split("[\\s,]+");
+        
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd_num_int = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs_num_int = Integer.parseInt(rs_num_string);
+                
+        //getting the immidate value 
+        int imm = Integer.parseInt(assembly_line_split[3]);
+                
+        // doing the operation and saving in the reg 
+        reg.add(rd_num_int,reg.get(rs_num_int)+imm);
+               
         for(int i = 0; i<32;i++){    // populate Registers  
         
         System.out.println("ADDI FUNCTION OUTPUT : "+"x" + i + ": " + reg.get(i)); //Test
@@ -62,6 +95,9 @@ public static ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0
             System.out.println("------------------------------------------------------"); //Test
         
     }
+    
+    
+    
 //Processing Instructions
 public  void ProcessInstruction(String instruction){
 
@@ -70,17 +106,17 @@ String opcode = extractOpcode(instruction);
 System.out.println("OpCode : "+ opcode); // Test
 
 switch(opcode){
-
+    //18
+    case "sw":{
+        SW(instruction);
+    }
+    //19
     case "addi":{
-    addi(instruction);
+        addi(instruction);
     }
     case "lui":{
-    lui(instruction);
-    
+        lui(instruction);
     }
-
-
-
 
 
 }
@@ -91,7 +127,7 @@ switch(opcode){
  
     
     public static void main(String[] args) {
-        
+        /*
         // creating a string array for the registers 
         // all elements are automatically initialized to zero
 
@@ -151,7 +187,8 @@ switch(opcode){
    //     }
         
    
-           
+
+*/
     }
     
     
