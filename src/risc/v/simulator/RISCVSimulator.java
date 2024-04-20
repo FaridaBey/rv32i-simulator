@@ -13,12 +13,13 @@ import java.util.*;
 
 public class RISCVSimulator {
     
-public static Map <String, Integer> Memory = new HashMap<>(); // Memory
+public static Map <Integer, Integer> Memory = new HashMap<>(); // Memory
 public static ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0));
 
+
+
+
 //
-
-
     /**
      * @param args the command line arguments
      */
@@ -68,6 +69,8 @@ public static ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0
         int base_addr = reg.get(base_addr_reg);
         System.out.println("BASE addr  " + base_addr + "\n");
         
+        Memory.put(base_addr + off_set , value);
+        System.out.println(Memory);
     }
     
    // 19
