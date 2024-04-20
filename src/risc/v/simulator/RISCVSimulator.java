@@ -48,6 +48,53 @@ public static ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0
         reg.add(regd, imm);
      }
    
+    // 16
+    public  void SH (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String value_reg = parts[1].substring(1);
+        int value_reg_int = Integer.parseInt(value_reg);
+        int value = reg.get(value_reg_int);
+        System.out.println("VALUE IN SOURCE REG " + value + "\n" );
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        System.out.println("OFFset " + off_set+ "\n");
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        System.out.println("BASE addr  " + base_addr + "\n");
+        
+        Memory.put(base_addr + off_set , value);
+        System.out.println(Memory);
+    }
+   
+   // 17
+    public  void SB (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String value_reg = parts[1].substring(1);
+        int value_reg_int = Integer.parseInt(value_reg);
+        int value = reg.get(value_reg_int);
+        System.out.println("VALUE IN SOURCE REG " + value + "\n" );
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        System.out.println("OFFset " + off_set+ "\n");
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        System.out.println("BASE addr  " + base_addr + "\n");
+        
+        Memory.put(base_addr + off_set , value);
+        System.out.println(Memory);
+    }
    
    // 18
     public  void SW (String instr){
@@ -109,6 +156,14 @@ String opcode = extractOpcode(instruction);
 System.out.println("OpCode : "+ opcode); // Test
 
 switch(opcode){
+    //16
+    case "sb":{
+        SB(instruction);
+    }
+    //17
+    case "sh":{
+        SH(instruction);
+    }
     //18
     case "sw":{
         SW(instruction);
