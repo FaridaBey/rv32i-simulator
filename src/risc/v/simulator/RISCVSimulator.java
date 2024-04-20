@@ -3,25 +3,98 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package risc.v.simulator;
-import java.io.*;
-import java.util.Scanner;
+
+import java.util.*;
 
 /**
  *
  * @author lenovo
  */
-public class RISCVSimulator {
 
+public class RISCVSimulator {
+    
+public static Map <String, Integer> Memory = new HashMap<>(); // Memory
+public static ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0));
     /**
      * @param args the command line arguments
      */
+//Printing
+
+//Parsing Functions
+   public  String extractOpcode(String instruction) {
+        // Splitting the instruction by whitespace or comma
+        String[] parts = instruction.split("[,\\s]+");
+        // Returning the first part, which is the opcode
+        return parts[0];
+    }
+//Instruction Functions 
+   public void lui (String instr){
+        String[] parts = instr.split("[,\\s]+");
+            int regd = 0, imm = 0;
+        
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                regd = Integer.parseInt(part.substring(1));
+            } else {
+                imm = Integer.parseInt(part);
+            }
+        }
+        reg.add(regd, imm);
+     }
+   
+    public  void addi (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs = 0, imm = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+              if (regd == 0) {regd = Integer.parseInt(part.substring(1));}
+              else {regs = Integer.parseInt(part.substring(1));}
+            } else {imm = Integer.parseInt(part);}
+        }
+        reg.add(regd,reg.get(regs)+imm);
+        
+        for(int i = 0; i<32;i++){    // populate Registers  
+        
+        System.out.println("ADDI FUNCTION OUTPUT : "+"x" + i + ": " + reg.get(i)); //Test
+        }
+            System.out.println("------------------------------------------------------"); //Test
+        
+    }
+//Processing Instructions
+public  void ProcessInstruction(String instruction){
+
+String opcode = extractOpcode(instruction);
+
+System.out.println("OpCode : "+ opcode); // Test
+
+switch(opcode){
+
+    case "addi":{
+    addi(instruction);
+    }
+    case "lui":{
+    lui(instruction);
     
+    }
+
+
+
+
+
+}
+
+
+}
+
+ 
     
     public static void main(String[] args) {
         
         // creating a string array for the registers 
         // all elements are automatically initialized to zero
-        int[] reg = new int[32]; 
+
         // need to find a way to make x0 constant at zero 
         
         
@@ -61,7 +134,7 @@ public class RISCVSimulator {
                 int imm = Integer.parseInt(assembly_line_split[3]);
                 
                 // doing the operation and saving in the reg 
-                reg[rd_num_int] = reg[rd_num_int] + imm;
+               // reg[rd_num_int] = reg[rd_num_int] + imm;
                 
                 
                 break;
@@ -73,9 +146,9 @@ public class RISCVSimulator {
         
         
         // function that prints all the registers 
-       for (int i = 0; i < reg.length; i++) {
-             System.out.println("x" + i+ " : " + reg[i]);
-        }
+    //   for (int i = 0; i < reg.length; i++) {
+  //           System.out.println("x" + i+ " : " + reg[i]);
+   //     }
         
    
            
