@@ -4,7 +4,13 @@
  */
 package GUI;
 
-import risc.v.simulator.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  *
@@ -16,20 +22,106 @@ import risc.v.simulator.*;
 
 
 public class Viewer extends javax.swing.JFrame {
-//global Varibles
+//global Varibels
+public  Map <String, Integer> Memory = new HashMap<>(); // Memory
+public  ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0));
+//Parsing Functions
+   public  String extractOpcode(String instruction) {
+        // Splitting the instruction by whitespace or comma
+        String[] parts = instruction.split("[,\\s]+");
+        // Returning the first part, which is the opcode
+        return parts[0];
+    }
+//Instruction Functions 
+   public void lui (String instr){
+        String[] parts = instr.split("[,\\s]+");
+            int regd = 0, imm = 0;
+        
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                regd = Integer.parseInt(part.substring(1));
+            } else {
+                imm = Integer.parseInt(part);
+            }
+        }
+     
+        reg.set(regd, imm);
+        
+     }
+   
+ public void addi(String instr) {
+String[] assembly_line_split = instr.split("[\\s,]+");
+        
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd_num_int = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs_num_int = Integer.parseInt(rs_num_string);
+                
+        //getting the immidate value 
+        int imm = Integer.parseInt(assembly_line_split[3]);
+                
+        // doing the operation and saving in the reg 
+        
+         reg.set(rd_num_int,reg.get(rs_num_int)+imm);
+        
+        for(int i = 0; i<32;i++){    // populate Registers  
+        
+        System.out.println("ADDI FUNCTION OUTPUT : "+"x" + i + ": " + reg.get(i)); //Test
+        }
+            System.out.println("------------------------------------------------------"); //Test
+     
+}
 
-RISCVSimulator RS = new RISCVSimulator();
+//Processing Instructions
+public void ProcessInstruction(String instruction){
+
+String opcode = extractOpcode(instruction);
+
+System.out.println("OpCode : "+ opcode); // Test
+
+switch(opcode){
+
+    case "addi":{
+    addi(instruction);
+    }
+    case "lui":{
+    lui(instruction);
+    
+    }
+
+
+//addi x10,x20
+}
+}
+    
+    
+    
+    
+    
+
 String[] Instruction;
 int counter;
 
- public void PrintRegisters(){
-     
- Registers.setText("");
- for(int i = 0; i<32;i++){    // populate Registers Component 
-        Registers.append("x" + i + ": " + RS.reg.get(i) + "\n"); 
+public void PrintRegisters() {
+    
+    Registers.setText("");
+  
+    
+    
+    // Assuming RS provides a method to retrieve register values
+    // Ensure the register list is valid and has enough elements
+        for (int i = 0; i < 32; i++) {
+           Registers.append("x" + i + ": " + reg.get(i) + "\n");
+           // System.out.println("PrintReg FUNCTION OUTPUT : " + "x" + i + ": " + RS.reg[i]); //Test
         }
- }
- 
+    }
+
+
+
 
 public Viewer(String Assembly_Code, int Program_Counter)   {
       initComponents(); // initializes the GUI must always be at top
@@ -58,11 +150,8 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         NextBttn = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        Registers = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         AssemblyCode = new javax.swing.JTextArea();
         jLabel8 = new javax.swing.JLabel();
@@ -73,6 +162,8 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
         jLabel7 = new javax.swing.JLabel();
         ProgressBar = new javax.swing.JProgressBar();
         Complete = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Registers = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -95,6 +186,13 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
             }
         });
 
+        jButton1.setText("Back");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -102,15 +200,16 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(562, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(NextBttn)
-                        .addGap(16, 16, 16))))
+                        .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(NextBttn)))
+                .addGap(16, 16, 16))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,24 +219,19 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(NextBttn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel4))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(0, 6, Short.MAX_VALUE))
         );
 
-        Registers.setEditable(false);
-        Registers.setColumns(20);
-        Registers.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        Registers.setRows(5);
-        jScrollPane1.setViewportView(Registers);
-
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Memory");
-
-        jTextArea2.setEditable(false);
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
 
         AssemblyCode.setEditable(false);
         AssemblyCode.setColumns(20);
@@ -165,6 +259,10 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
         Complete.setForeground(new java.awt.Color(0, 102, 0));
         Complete.setText("Simulator Complete!");
 
+        Registers.setColumns(20);
+        Registers.setRows(5);
+        jScrollPane1.setViewportView(Registers);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,13 +271,12 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(180, 180, 180)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(219, 219, 219)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
@@ -206,9 +303,7 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
                     .addComponent(jLabel2)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -221,11 +316,12 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
                         .addComponent(CurrentInstruction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Complete)
-                .addContainerGap(12, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Complete))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -242,12 +338,22 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
         CurrentInstruction.setText(Instruction[counter]);
         System.out.println("Instruction : "+Instruction[counter]); //Test
         System.out.println("Counter : "+ counter); //Test
-        RS.ProcessInstruction(Instruction[counter]);
+        ProcessInstruction(Instruction[counter]);
+        PrintRegisters();
         ProgressBar.setValue(counter+1);
         counter++;
-        PrintRegisters();
+        
         
     }//GEN-LAST:event_NextBttnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Index i = new Index();
+        i.setVisible(true);
+        this.dispose();
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -291,6 +397,7 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
     private javax.swing.JButton NextBttn;
     private javax.swing.JProgressBar ProgressBar;
     private javax.swing.JTextArea Registers;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -301,9 +408,7 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
