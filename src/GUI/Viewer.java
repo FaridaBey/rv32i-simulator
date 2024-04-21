@@ -70,6 +70,7 @@ public  ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0));
         System.out.println("BASE addr  " + base_addr + "\n");
         
         Memory.put(base_addr + off_set , value);
+        
         System.out.println("Memory location: " + Memory);
     }
    
@@ -139,6 +140,26 @@ String[] assembly_line_split = instr.split("[\\s,]+");
             System.out.println("------------------------------------------------------"); //Test
      
 }
+  // 20
+    public  void SLLI (String instr){
+        String[] assembly_line_split = instr.split("[\\s,]+");
+        
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd_num_int = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs_num_int = Integer.parseInt(rs_num_string);
+                
+        //getting the immidate value 
+        int imm = Integer.parseInt(assembly_line_split[3]);
+                
+        // doing the operation and saving in the reg 
+        
+        reg.set(rd_num_int,reg.get(rs_num_int) << imm);
+        
+    }
 
 //Processing Instructions
 public void ProcessInstruction(String instruction){
@@ -148,10 +169,11 @@ String opcode = extractOpcode(instruction);
 System.out.println("OpCode : "+ opcode); // Test
 
 switch(opcode){
-    
-    
-    
-    
+    //1
+    case "lui":{
+    lui(instruction);
+    }
+    break;
     //16
     case "sb":{
     SB(instruction);
@@ -169,10 +191,13 @@ switch(opcode){
     addi(instruction);
     }
     break;
-    case "lui":{
-    lui(instruction);
+    // 20
+    case "slli":{
+    SLLI(instruction);
     }
-    break;
+    break; 
+    
+
 
 }
 }
