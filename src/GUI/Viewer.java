@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class Viewer extends javax.swing.JFrame {
 //global Varibels
-public  Map <String, Integer> Memory = new HashMap<>(); // Memory
+public  Map <Integer, Integer> Memory = new HashMap<>(); // Memory
 public  ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0));
 //Parsing Functions
    public  String extractOpcode(String instruction) {
@@ -49,7 +49,71 @@ public  ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0));
         reg.set(regd, imm);
         
      }
+    // 16
+    public  void SH (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String value_reg = parts[1].substring(1);
+        int value_reg_int = Integer.parseInt(value_reg);
+        int value = reg.get(value_reg_int);
+        System.out.println("VALUE IN SOURCE REG " + value + "\n" );
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        System.out.println("OFFset " + off_set+ "\n");
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        System.out.println("BASE addr  " + base_addr + "\n");
+        
+        Memory.put(base_addr + off_set , value);
+        System.out.println("Memory location: " + Memory);
+    }
    
+   // 17
+    public  void SB (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String value_reg = parts[1].substring(1);
+        int value_reg_int = Integer.parseInt(value_reg);
+        int value = reg.get(value_reg_int);
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        
+        Memory.put(base_addr + off_set , value);
+        System.out.println("Memory location: " + Memory);
+    }
+   // 18
+    public  void SW (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String value_reg = parts[1].substring(1);
+        int value_reg_int = Integer.parseInt(value_reg);
+        int value = reg.get(value_reg_int);
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        
+        Memory.put(base_addr + off_set , value);
+       System.out.println("Memory location: " + Memory);
+    }
+   //19
  public void addi(String instr) {
 String[] assembly_line_split = instr.split("[\\s,]+");
         
@@ -84,20 +148,34 @@ String opcode = extractOpcode(instruction);
 System.out.println("OpCode : "+ opcode); // Test
 
 switch(opcode){
-
+    
+    
+    
+    
+    //16
+    case "sb":{
+    SB(instruction);
+    }//17
+    case "sh":{
+    SH(instruction);
+    }
+    //18
+    case "sw":{
+    SW(instruction);
+    }
+    break;
+    // 19
     case "addi":{
     addi(instruction);
     }
+    break;
     case "lui":{
     lui(instruction);
-    
     }
+    break;
 
-
-//addi x10,x20
 }
 }
-    
     
     
     
