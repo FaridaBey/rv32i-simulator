@@ -160,6 +160,186 @@ String[] assembly_line_split = instr.split("[\\s,]+");
         reg.set(rd_num_int,reg.get(rs_num_int) << imm);
         
     }
+    //28
+    public void add(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        reg.set(regd, reg.get(regs1) + reg.get(regs2));
+    }
+    //29
+    public void sub(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        reg.set(regd, reg.get(regs1) - reg.get(regs2));
+    }
+    //36
+    public void or(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        reg.set(regd, reg.get(regs1) | reg.get(regs2));
+    }
+    //30
+    public void sll(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs = 0, shamt = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else {
+                    regs = Integer.parseInt(part.substring(1));
+                }
+            } else {
+                shamt = Integer.parseInt(part);
+            }
+        }
+        reg.set(regd, reg.get(regs) << shamt);
+    }
+    //31
+    public void slt(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        reg.set(regd, reg.get(regs1) < reg.get(regs2) ? 1 : 0);
+    }
+    //32
+    public void sltu(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        reg.set(regd, Integer.compareUnsigned(reg.get(regs1), reg.get(regs2)) < 0 ? 1 : 0);
+    }
+    //33
+    public void xor(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        reg.set(regd, reg.get(regs1) ^ reg.get(regs2));
+    }
+    //34
+    public void srl(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs = 0, shamt = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else {
+                    regs = Integer.parseInt(part.substring(1));
+                }
+            } else {
+                shamt = Integer.parseInt(part);
+            }
+        }
+        reg.set(regd, reg.get(regs) >>> shamt);
+    }
+    //35
+    public void sra(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs = 0, shamt = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else {
+                    regs = Integer.parseInt(part.substring(1));
+                }
+            } else {
+                shamt = Integer.parseInt(part);
+            }
+        }
+        reg.set(regd, reg.get(regs) >> shamt);
+    }
+    //37
+    public void and(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        reg.set(regd, reg.get(regs1) & reg.get(regs2));
+    }
 
 //Processing Instructions
 public void ProcessInstruction(String instruction){
@@ -196,7 +376,58 @@ switch(opcode){
     SLLI(instruction);
     }
     break; 
+    // 28
+    case "add": {
+        add(instruction);
+    }
+    break;
+     // 29
+    case "sub": {
+        sub(instruction);
+    }
+    break;
+    // 36
+    case "or": {
+        or(instruction);
+    }
+    break;
+    //30
+    case "sll": {
+        sll(instruction);
+    }
+    break;
+    //31
+    case "slt": {
+        slt(instruction);
+    }
+    break;
+    // 32
+    case "sltu": {
+        sltu(instruction);
+    }
+    break;
+    //33
+    case "xor": {
+        xor(instruction);
+    }
+    break;
+    //34
+    case "srl": {
+        srl(instruction);
+    }
+    break;
+    //35
+    case "sra": {
+        sra(instruction);
+    }
+    break;
+    //37
+    case "and": {
+        and(instruction);
+    }
+    break;
     
+
 
 
 }
