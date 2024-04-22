@@ -45,6 +45,7 @@ public String decimalToHexadecimal(int decimal) {
         return parts[0];
     }
 //Instruction Functions 
+   // 1
    public void lui (String instr){
         String[] parts = instr.split("[,\\s]+");
             int regd = 0, imm = 0;
@@ -61,8 +62,147 @@ public String decimalToHexadecimal(int decimal) {
         reg.set(regd, imm);
         
      }
-    // 16
-    public  void SH (String instr){
+   
+   // 10
+   public  void BGEU (String instr){
+       String[] assembly_line_split = instr.split("[\\s,]+");
+
+        //getting the first source register number
+        String rs1_string = assembly_line_split[1].substring(1);
+        int rs1_int = Integer.parseInt(rs1_string);
+        
+        // getting the second source register number
+        String rs2_string = assembly_line_split[2].substring(1);
+        int rs2_int = Integer.parseInt(rs2_string);
+                
+        //getting the label
+        String label = assembly_line_split[3];
+                
+        // doing the comparison 
+        int value_rs1_absolute = Math.abs(reg.get(rs1_int));
+        int value_rs2_absolute = Math.abs(reg.get(rs2_int));
+        
+        if ((value_rs1_absolute == value_rs2_absolute) || (value_rs1_absolute > value_rs2_absolute)){
+            // go to label
+            System.out.println("Go to label: " + label);
+        }
+        else
+            System.out.println("continued without branching");
+    }
+   
+   // 11
+   public  void LB (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String rd_string = parts[1].substring(1);
+        int rd_int = Integer.parseInt(rd_string);
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        System.out.println("BASE addr  " + base_addr + "\n");
+        
+        int value = Memory.get(base_addr + off_set);
+        
+        reg.set(rd_int,value);
+    }
+   
+   // 12
+   public  void LH (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String rd_string = parts[1].substring(1);
+        int rd_int = Integer.parseInt(rd_string);
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        System.out.println("BASE addr  " + base_addr + "\n");
+        
+        int value = Memory.get(base_addr + off_set);
+        
+        reg.set(rd_int,value);
+    }
+   
+   // 13
+   public  void LW (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String rd_string = parts[1].substring(1);
+        int rd_int = Integer.parseInt(rd_string);
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        System.out.println("BASE addr  " + base_addr + "\n");
+        
+        int value = Memory.get(base_addr + off_set);
+        int value_unsinged = Math.abs(value);
+        
+        reg.set(rd_int,value_unsinged);
+    }
+   
+   // 14
+   public  void LBU (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String rd_string = parts[1].substring(1);
+        int rd_int = Integer.parseInt(rd_string);
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        System.out.println("BASE addr  " + base_addr + "\n");
+        
+        int value = Memory.get(base_addr + off_set);
+        int value_unsinged = Math.abs(value);
+        reg.set(rd_int,value_unsinged);
+    }
+   
+   // 15
+   public  void LHU (String instr){
+   String[] parts = instr.split("[,\\s]+");
+        
+        String rd_string = parts[1].substring(1);
+        int rd_int = Integer.parseInt(rd_string);
+        
+        
+        String off_set_string = parts[2];
+        int off_set = Integer.parseInt(off_set_string);
+        
+        int length_temp = parts[3].length();
+        String base_reg_string = parts[3].substring(2,length_temp-1);
+        int base_addr_reg = Integer.parseInt(base_reg_string);
+        int base_addr = reg.get(base_addr_reg);
+        System.out.println("BASE addr  " + base_addr + "\n");
+        
+        int value = Memory.get(base_addr + off_set);
+        int value_unsinged = Math.abs(value);
+        reg.set(rd_int,value_unsinged);
+    }
+   
+   // 16
+   public  void SH (String instr){
    String[] parts = instr.split("[,\\s]+");
         
         String value_reg = parts[1].substring(1);
@@ -87,7 +227,7 @@ public String decimalToHexadecimal(int decimal) {
     }
    
    // 17
-    public  void SB (String instr){
+   public  void SB (String instr){
    String[] parts = instr.split("[,\\s]+");
         
         String value_reg = parts[1].substring(1);
@@ -107,7 +247,7 @@ public String decimalToHexadecimal(int decimal) {
         System.out.println("Memory location: " + Memory);
     }
    // 18
-    public  void SW (String instr){
+   public  void SW (String instr){
    String[] parts = instr.split("[,\\s]+");
         
         String value_reg = parts[1].substring(1);
@@ -126,9 +266,10 @@ public String decimalToHexadecimal(int decimal) {
         Memory.put(base_addr + off_set , value);
        System.out.println("Memory location: " + Memory);
     }
+   
    //19
- public void addi(String instr) {
-String[] assembly_line_split = instr.split("[\\s,]+");
+   public void addi(String instr) {
+    String[] assembly_line_split = instr.split("[\\s,]+");
         
         //getting the destination register number
         String rd_num_string = assembly_line_split[1].substring(1);
@@ -149,9 +290,9 @@ String[] assembly_line_split = instr.split("[\\s,]+");
         
         System.out.println("ADDI FUNCTION OUTPUT : "+"x" + i + ": " + reg.get(i)); //Test
         }
-            System.out.println("------------------------------------------------------"); //Test
-     
+            System.out.println("------------------------------------------------------"); //Test 
 }
+   
   // 20
     public  void SLLI (String instr){
         String[] assembly_line_split = instr.split("[\\s,]+");
@@ -172,6 +313,7 @@ String[] assembly_line_split = instr.split("[\\s,]+");
         reg.set(rd_num_int,reg.get(rs_num_int) << imm);
         
     }
+    
     //28
     public void add(String instr) {
         String[] parts = instr.split("[,\\s]+");
@@ -540,32 +682,53 @@ System.out.println("OpCode : "+ opcode); // Test
 
 switch(opcode){
     //1
-    case "lui":{
-    lui(instruction);
-    }
+    case "lui":{ lui(instruction); }
     break;
+    
+    //10
+    case "bgeu":{ BGEU(instruction); }
+    break;
+    
+    //11
+    case "lb":{ LB(instruction); }
+    break;
+    
+    //12
+    case "lh":{ LH(instruction); }
+    break;
+    
+    //13
+    case "lw":{ LW(instruction); }
+    break;
+    
+    //14
+    case "lbu":{ LHU(instruction); }
+    break;
+    
+    //15
+    case "lhu":{ LHU(instruction); }
+    break;
+    
     //16
-    case "sb":{
-    SB(instruction);
-    }//17
-    case "sh":{
-    SH(instruction);
-    }
+    case "sb":{ SB(instruction); }
+    break;
+    
+    //17
+    case "sh":{ SH(instruction); }
+    break;
+    
     //18
-    case "sw":{
-    SW(instruction);
-    }
+    case "sw":{ SW(instruction); }
     break;
+    
     // 19
-    case "addi":{
-    addi(instruction);
-    }
+    case "addi":{ addi(instruction); }
     break;
+    
     // 20
-    case "slli":{
-    SLLI(instruction);
-    }
+    case "slli":{ SLLI(instruction); }
     break; 
+    
     // 28
     case "add": {
         add(instruction);
