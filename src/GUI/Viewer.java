@@ -201,11 +201,6 @@ switch(opcode){
 
 }
 }
-    
-    
-    
-    
-
 String[] Instruction;
 int counter;
 
@@ -223,17 +218,34 @@ public void PrintRegisters() {
         }
     }
 
+public void PrintMemory(){
+    Memory1.setText("");
+if(!Memory.isEmpty()){
+    
+    for (var entry : Memory.entrySet()) {
+    Memory1.append(entry.getKey() + " / " + entry.getValue() + "\n");
+    }
+}
+    else{
+             Memory1.append("...");
+            
+          }
+}
 
 
 
+String Assembly_CodeCpy; int Program_CounterCpy;
 public Viewer(String Assembly_Code, int Program_Counter)   {
       initComponents(); // initializes the GUI must always be at top
+      Assembly_CodeCpy = Assembly_Code;
+      Program_CounterCpy = Program_Counter;
       counter = 0;
       PrintRegisters();
-      Complete.setVisible(false);
+      PrintMemory();
       AssemblyCode.setText(Assembly_Code); // Set the Assmblycode Compoent to the code entered in the Index
       Instruction = Assembly_Code.split("\n"); // Splits the Assembly Code instructions and puts in an array
       ProgressBar.setMaximum(Instruction.length); // sets the maximum value of the progressbar component to the length of the Instruction Array 
+      Complete.setVisible(false);// need to know how to make the progressBar contain Text
 
     }
     
@@ -254,6 +266,7 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
         jLabel5 = new javax.swing.JLabel();
         NextBttn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         AssemblyCode = new javax.swing.JTextArea();
@@ -264,9 +277,11 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
         jTextField2 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         ProgressBar = new javax.swing.JProgressBar();
-        Complete = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Registers = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Memory1 = new javax.swing.JTextArea();
+        Complete = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -282,6 +297,9 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/10872782.png"))); // NOI18N
 
+        NextBttn.setBackground(new java.awt.Color(204, 204, 204));
+        NextBttn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        NextBttn.setForeground(new java.awt.Color(0, 0, 0));
         NextBttn.setText("Next Instruction");
         NextBttn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -289,10 +307,22 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
             }
         });
 
-        jButton1.setText("Back");
+        jButton1.setBackground(new java.awt.Color(255, 0, 0));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setText("Exit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setBackground(new java.awt.Color(204, 204, 204));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(0, 0, 0));
+        jButton2.setText("Restart");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -303,15 +333,17 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(14, 14, 14)
                         .addComponent(jButton1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(NextBttn)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(NextBttn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(16, 16, 16))
         );
         jPanel1Layout.setVerticalGroup(
@@ -321,14 +353,16 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(NextBttn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(NextBttn)
+                            .addComponent(jButton1))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel4))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(jButton2)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(0, 6, Short.MAX_VALUE))
         );
@@ -355,16 +389,23 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Progress");
 
-        ProgressBar.setForeground(new java.awt.Color(255, 153, 0));
-
-        Complete.setBackground(new java.awt.Color(0, 153, 0));
-        Complete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        Complete.setForeground(new java.awt.Color(0, 102, 0));
-        Complete.setText("Simulator Complete!");
+        ProgressBar.setBackground(new java.awt.Color(255, 153, 0));
+        ProgressBar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ProgressBar.setForeground(new java.awt.Color(0, 0, 0));
 
         Registers.setColumns(20);
+        Registers.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         Registers.setRows(5);
         jScrollPane1.setViewportView(Registers);
+
+        Memory1.setColumns(20);
+        Memory1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Memory1.setRows(5);
+        jScrollPane2.setViewportView(Memory1);
+
+        Complete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Complete.setForeground(new java.awt.Color(0, 102, 0));
+        Complete.setText("SIMULATOR COMPLETE!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -374,39 +415,39 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(180, 180, 180)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(219, 219, 219)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(CurrentInstruction)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(Complete))
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(CurrentInstruction)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Complete))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -421,10 +462,11 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(Complete))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -435,15 +477,17 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
         // TODO add your handling code here:
         System.out.println("Instruction Length : "+Instruction.length);
         if(counter==Instruction.length-1){
-        Complete.setVisible(true);
         NextBttn.setVisible(false);
+        Complete.setVisible(true);
         }
         CurrentInstruction.setText(Instruction[counter]);
         System.out.println("Instruction : "+Instruction[counter]); //Test
         System.out.println("Counter : "+ counter); //Test
         ProcessInstruction(Instruction[counter]);
         PrintRegisters();
+        PrintMemory();
         ProgressBar.setValue(counter+1);
+        
         counter++;
         
         
@@ -457,6 +501,16 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Viewer v = new Viewer(Assembly_CodeCpy, Program_CounterCpy) {
+          
+        };
+        v.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -497,10 +551,12 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
     private javax.swing.JTextArea AssemblyCode;
     private javax.swing.JLabel Complete;
     private javax.swing.JTextField CurrentInstruction;
+    private javax.swing.JTextArea Memory1;
     private javax.swing.JButton NextBttn;
     private javax.swing.JProgressBar ProgressBar;
     private javax.swing.JTextArea Registers;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -511,6 +567,7 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
