@@ -314,6 +314,130 @@ public String decimalToHexadecimal(int decimal) {
         
     }
     
+    // 21
+    public void SLTIU (String instr) {
+    
+    String[] assembly_line_split = instr.split("[\\s,]+");
+    
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs = Integer.parseInt(rs_num_string);
+        
+        // getting the immediate value
+        int imm = Integer.parseInt(assembly_line_split[3]);
+        
+        if(rs < imm)
+        {
+        reg.set(rd , 1);
+        }
+        else
+        {
+        reg.set(rd, 0);
+        }
+        
+    }
+    
+    //22
+    public void XORI (String instr) {
+    String[] assembly_line_split = instr.split("[\\s,]+");
+    
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs = Integer.parseInt(rs_num_string);
+        
+        // getting the immediate value
+        int imm = Integer.parseInt(assembly_line_split[3]);
+        
+        reg.set(rd, reg.get(rs) ^ reg.get(imm));
+    }
+    
+    //23
+    public void ORI (String instr) {
+    String[] assembly_line_split = instr.split("[\\s,]+");
+    
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs = Integer.parseInt(rs_num_string);
+        
+        // getting the immediate value
+        int imm = Integer.parseInt(assembly_line_split[3]);
+        
+        reg.set(rd, reg.get(rs) | reg.get(imm));
+    }
+    
+    //24
+    public void ANDI (String instr) {
+    String[] assembly_line_split = instr.split("[\\s,]+");
+    
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs = Integer.parseInt(rs_num_string);
+        
+        // getting the immediate value
+        int imm = Integer.parseInt(assembly_line_split[3]);
+        
+        reg.set(rd, reg.get(rs) & reg.get(imm));
+    }
+    
+    /****/
+
+    /**
+     * /
+     * @param instr
+     */
+    //26
+    public void SRLI (String instr) {
+        String[] assembly_line_split = instr.split("[\\s,]+");
+    
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs = Integer.parseInt(rs_num_string);
+        
+        // getting the immediate value
+        int imm = Integer.parseInt(assembly_line_split[3]);
+        
+        reg.set(rd , reg.get(rs) >> imm);
+    }
+    
+    //27
+        public void SRAI (String instr) {
+        String[] assembly_line_split = instr.split("[\\s,]+");
+    
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs = Integer.parseInt(rs_num_string);
+        
+        // getting the immediate value
+        int shamt = Integer.parseInt(assembly_line_split[3]);
+        
+        reg.set(rd , reg.get(rs) >> shamt);
+    }
+    
+    
     //28
     public void add(String instr) {
         String[] parts = instr.split("[,\\s]+");
@@ -728,6 +852,36 @@ switch(opcode){
     // 20
     case "slli":{ SLLI(instruction); }
     break; 
+    //21
+    case "sltiu" : {
+    SLTIU(instruction);
+    }
+    break;
+    //22
+    case "xori" :{
+    XORI(instruction);
+    }
+    break;
+    //23
+    case "ori" :{
+    ORI(instruction);
+    }
+    break;
+    //24
+    case "andi" : {
+    ANDI(instruction);
+    }
+    break;
+    //26
+    case "srli" :{
+    SRLI(instruction);
+    }
+    break;
+    //27
+        case "srai" :{
+    SRAI(instruction);
+    }
+    break;
     
     // 28
     case "add": {
