@@ -25,6 +25,18 @@ public class Viewer extends javax.swing.JFrame {
 //global Varibels
 public  Map <Integer, Integer> Memory = new HashMap<>(); // Memory
 public  ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0));
+// binary output 
+public String decimalToBinary(int decimal) {
+    return Integer.toBinaryString(decimal);
+}
+// hexa output
+public String decimalToHexadecimal(int decimal) {
+    return Integer.toHexString(decimal);
+}
+
+
+
+
 //Parsing Functions
    public  String extractOpcode(String instruction) {
         // Splitting the instruction by whitespace or comma
@@ -341,6 +353,184 @@ String[] assembly_line_split = instr.split("[\\s,]+");
         reg.set(regd, reg.get(regs1) & reg.get(regs2));
     }
 
+    //EXTRA INSTRUCTIONS MUL AND DIV
+    //m1
+    public void mul(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        reg.set(regd, reg.get(regs1) * reg.get(regs2));
+    }
+    //m2
+    public void mulh(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        // Perform MULH operation
+        long result = (long) reg.get(regs1) * (long) reg.get(regs2);
+        reg.set(regd, (int) (result >> 32)); // Store the high 32 bits of the result
+    }
+    //m3
+    public void mulhsu(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        // Perform MULHSU operation
+        long result = (long) reg.get(regs1) * (long) (reg.get(regs2) & 0xFFFFFFFFL);
+        reg.set(regd, (int) (result >> 32)); // Store the high 32 bits of the result
+    }
+    //m4
+    public void mulhu(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        // Perform MULHU operation
+        long result = (long) (reg.get(regs1) & 0xFFFFFFFFL) * (long) (reg.get(regs2) & 0xFFFFFFFFL);
+        reg.set(regd, (int) (result >>> 32)); // Store the high 32 bits of the result
+    }   
+    //m5         
+    public void div(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        if (reg.get(regs2) != 0) {
+            reg.set(regd, reg.get(regs1) / reg.get(regs2));
+        } else {
+            System.err.println("Error: Division by zero.");
+        }
+    }
+    //m6
+    public void divu(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        // Perform DIVU operation
+        int dividend = reg.get(regs1);
+        int divisor = reg.get(regs2);
+        if (divisor != 0) {
+            reg.set(regd, Integer.divideUnsigned(dividend, divisor));
+        } else {
+            System.err.println("Error: Division by zero.");
+        }
+    }
+    //m7
+    public void rem(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        // Perform REM operation
+        int dividend = reg.get(regs1);
+        int divisor = reg.get(regs2);
+        if (divisor != 0) {
+            reg.set(regd, dividend % divisor);
+        } else {
+            System.err.println("Error: Division by zero.");
+        }
+    }
+    //m8
+    public void remu(String instr) {
+        String[] parts = instr.split("[,\\s]+");
+        int regd = 0, regs1 = 0, regs2 = 0;
+        for (int i = 1; i < parts.length; i++) {
+            String part = parts[i];
+            if (part.startsWith("x")) {
+                if (regd == 0) {
+                    regd = Integer.parseInt(part.substring(1));
+                } else if (regs1 == 0) {
+                    regs1 = Integer.parseInt(part.substring(1));
+                } else {
+                    regs2 = Integer.parseInt(part.substring(1));
+                }
+            }
+        }
+        // Perform REMU operation
+        int dividend = reg.get(regs1);
+        int divisor = reg.get(regs2);
+        if (divisor != 0) {
+            reg.set(regd, Integer.remainderUnsigned(dividend, divisor));
+        } else {
+            System.err.println("Error: Division by zero.");
+        }
+    }
+            
+
 //Processing Instructions
 public void ProcessInstruction(String instruction){
 
@@ -426,9 +616,46 @@ switch(opcode){
         and(instruction);
     }
     break;
-    
-
-
+    //m1
+    case "mul": {
+        mul(instruction);
+        break;
+    }
+    //m2
+    case "mulh": {
+        mulh(instruction);
+        break;
+    }
+    //m3
+    case "mulhsu": {
+        mulhsu(instruction);
+        break;
+    }
+    //m4
+    case "mulhu": {
+        mulhu(instruction);
+        break;
+    }
+    //m5
+    case "div": {
+        div(instruction);
+        break;
+    }
+    //m6
+    case "divu": {
+        divu(instruction);
+        break;
+    }
+    //m7
+    case "rem": {
+        rem(instruction);
+        break;
+    }
+    //m8
+    case "remu": {
+        remu(instruction);
+        break;
+    }
 
 }
 }
@@ -448,6 +675,30 @@ public void PrintRegisters() {
            // System.out.println("PrintReg FUNCTION OUTPUT : " + "x" + i + ": " + RS.reg[i]); //Test
         }
     }
+
+// print binary regs
+public void Print_bin_Registers() {
+    Registers.setText("");
+
+    // Ensure the register list is valid and has enough elements
+    for (int i = 0; i < 32; i++) {
+        // Convert the decimal register value to binary
+        String binaryValue = decimalToBinary(reg.get(i));
+        Registers.append("x" + i + ": " + binaryValue + "\n");
+    }
+}
+// print hexa regs
+public void Print_hexa_Registers() {
+    Registers.setText("");
+
+    // Ensure the register list is valid and has enough elements
+    for (int i = 0; i < 32; i++) {
+        // Convert the decimal register value to hexadecimal
+        String hexadecimalValue = decimalToHexadecimal(reg.get(i));
+        Registers.append("x" + i + ": " + hexadecimalValue + "\n");
+    }
+}
+
 
 public void PrintMemory(){
     Memory1.setText("");
@@ -803,3 +1054,4 @@ public Viewer(String Assembly_Code, int Program_Counter)   {
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
+
