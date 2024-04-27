@@ -177,7 +177,11 @@ public void EndSimulation(){
         String rd_string = parts[1].substring(1);
         int rd_int = Integer.parseInt(rd_string);
         
-        
+        // condition to keep x0 zero
+        if (rd_int == 0){
+            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String off_set_string = parts[2];
         int off_set = Integer.parseInt(off_set_string);
         
@@ -185,7 +189,6 @@ public void EndSimulation(){
         String base_reg_string = parts[3].substring(2,length_temp-1);
         int base_addr_reg = Integer.parseInt(base_reg_string);
         int base_addr = reg.get(base_addr_reg);
-        System.out.println("BASE addr  " + base_addr + "\n");
         
         int value = Data_Memory.get(base_addr + off_set);
         
@@ -198,13 +201,18 @@ public void EndSimulation(){
         
         String rd_string = parts[1].substring(1);
         int rd_int = Integer.parseInt(rd_string);
+        
+        // condition to keep x0 zero
+        if (rd_int == 0){
+            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String off_set_string = parts[2];
         int off_set = Integer.parseInt(off_set_string);
         int length_temp = parts[3].length();
         String base_reg_string = parts[3].substring(2,length_temp-1);
         int base_addr_reg = Integer.parseInt(base_reg_string);
         int base_addr = reg.get(base_addr_reg);
-        System.out.println("BASE addr  " + base_addr + "\n");
         
         int value = Data_Memory.get(base_addr + off_set);
         
@@ -218,6 +226,11 @@ public void EndSimulation(){
         String rd_string = parts[1].substring(1);
         int rd_int = Integer.parseInt(rd_string);
         
+        // condition to keep x0 zero
+        if (rd_int == 0){
+            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
         String off_set_string = parts[2];
         int off_set = Integer.parseInt(off_set_string);
@@ -226,7 +239,7 @@ public void EndSimulation(){
         String base_reg_string = parts[3].substring(2,length_temp-1);
         int base_addr_reg = Integer.parseInt(base_reg_string);
         int base_addr = reg.get(base_addr_reg);
-        System.out.println("BASE addr  " + base_addr + "\n");
+        
         
         int value = Data_Memory.get(base_addr + off_set);
         int value_unsinged = Math.abs(value);
@@ -240,7 +253,11 @@ public void EndSimulation(){
         
         String rd_string = parts[1].substring(1);
         int rd_int = Integer.parseInt(rd_string);
-        
+        // condition to keep x0 zero
+        if (rd_int == 0){
+            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
         String off_set_string = parts[2];
         int off_set = Integer.parseInt(off_set_string);
@@ -249,7 +266,7 @@ public void EndSimulation(){
         String base_reg_string = parts[3].substring(2,length_temp-1);
         int base_addr_reg = Integer.parseInt(base_reg_string);
         int base_addr = reg.get(base_addr_reg);
-        System.out.println("BASE addr  " + base_addr + "\n");
+        
         
         int value = Data_Memory.get(base_addr + off_set);
         int value_unsinged = Math.abs(value);
@@ -262,7 +279,11 @@ public void EndSimulation(){
         
         String rd_string = parts[1].substring(1);
         int rd_int = Integer.parseInt(rd_string);
-        
+        // condition to keep x0 zero
+        if (rd_int == 0){
+            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+            return;
+        }        
         
         String off_set_string = parts[2];
         int off_set = Integer.parseInt(off_set_string);
@@ -351,7 +372,11 @@ public void EndSimulation(){
         //getting the destination register number
         String rd_num_string = assembly_line_split[1].substring(1);
         int rd_num_int = Integer.parseInt(rd_num_string);
-        
+        // condition to keep x0 zero
+        if (rd_num_int == 0){
+            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+            return;
+        }        
         // getting the source register number
         String rs_num_string = assembly_line_split[2].substring(1);
         int rs_num_int = Integer.parseInt(rs_num_string);
