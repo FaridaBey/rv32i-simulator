@@ -74,7 +74,7 @@ public void EndSimulation(){
           JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
           return;
           }
-         reg.add(regd, immShifted);
+         reg.set(regd, immShifted);
    }
    //3
    public void JAL (String instr) {
@@ -1178,6 +1178,7 @@ if(!Instruction_Memory.isEmpty()){
 }
     else{Memory2.append("Instruction Memory is Empty");}
 }
+//commit
 public Viewer(String Assembly_Code, int Program_Counter, Map <Integer, Integer> DM){      
       initComponents(); // initializes the GUI must always be at top
       Assembly_CodeCpy = Assembly_Code;
