@@ -58,7 +58,10 @@ public void EndSimulation(){
           JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
           return;
           }
-        reg.set(regd, immShifted);}
+        reg.set(regd, immShifted);
+        Program_CounterCpy += 4;
+   
+   }
    // 2
    public void AUIPC (String instr){
        String[] parts = instr.split("[,\\s]+");
@@ -75,6 +78,7 @@ public void EndSimulation(){
           return;
           }
          reg.set(regd, immShifted);
+        Program_CounterCpy += 4;
    }
    //3
    public void JAL (String instr) {
@@ -129,7 +133,7 @@ public void EndSimulation(){
    int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
    int label_addr = Integer.parseInt(assembly_line_split[3]);
    if(reg.get(rd1) != reg.get(rd2)){Program_CounterCpy = label_addr;}   
-   Program_CounterCpy -= 4;
+   Program_CounterCpy += 4;
    counter--;
    }
    //7
@@ -139,7 +143,7 @@ public void EndSimulation(){
    int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
    int label_addr = Integer.parseInt(assembly_line_split[3]);
    if(reg.get(rd1) < reg.get(rd2)){Program_CounterCpy = label_addr;} 
-   Program_CounterCpy -= 4;
+   Program_CounterCpy += 4;
    counter--;
    }  
    //8
@@ -149,7 +153,7 @@ public void EndSimulation(){
    int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
    int label_addr = Integer.parseInt(assembly_line_split[3]);
    if(reg.get(rd1) >= reg.get(rd2)){Program_CounterCpy = label_addr;}  
-   Program_CounterCpy -= 4;
+   Program_CounterCpy += 4;
    counter--;
    }  
    //9
@@ -161,7 +165,7 @@ public void EndSimulation(){
         int value_rs1_absolute = Math.abs(reg.get(rd1));
         int value_rs2_absolute = Math.abs(reg.get(rd2));
         if ((value_rs1_absolute < value_rs2_absolute)){Program_CounterCpy = label_addr;}
-        Program_CounterCpy -= 4;
+        Program_CounterCpy += 4;
         counter--;
        
      }
@@ -172,7 +176,7 @@ public void EndSimulation(){
    int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
    int label_addr = Integer.parseInt(assembly_line_split[3]);
    if(Math.abs(reg.get(rd1)) >= Math.abs(reg.get(rd2))){Program_CounterCpy = label_addr;} 
-   Program_CounterCpy -= 4;
+   Program_CounterCpy += 4;
    counter--;
     }
    
@@ -199,6 +203,7 @@ public void EndSimulation(){
         int value = Data_Memory.get(base_addr + off_set);
         
         reg.set(rd_int,value);
+        Program_CounterCpy += 4;
     }
    
    // 12
@@ -223,6 +228,7 @@ public void EndSimulation(){
         int value = Data_Memory.get(base_addr + off_set);
         
         reg.set(rd_int,value);
+        Program_CounterCpy += 4;
     }
    
    // 13
@@ -278,6 +284,7 @@ public void EndSimulation(){
         int value = Data_Memory.get(base_addr + off_set);
         int value_unsinged = Math.abs(value);
         reg.set(rd_int,value_unsinged);
+        Program_CounterCpy += 4;
     }
    
    // 15
@@ -304,6 +311,7 @@ public void EndSimulation(){
         int value = Data_Memory.get(base_addr + off_set);
         int value_unsinged = Math.abs(value);
         reg.set(rd_int,value_unsinged);
+        Program_CounterCpy += 4;
     }
    
    // 16
@@ -327,6 +335,7 @@ public void EndSimulation(){
       //  System.out.println("BASE addr  " + base_addr + "\n");
         
         Data_Memory.put(base_addr + off_set , value);
+        Program_CounterCpy += 4;
         
        // System.out.println("Memory location: " + Data_Memory);
     }
@@ -349,6 +358,7 @@ public void EndSimulation(){
         int base_addr = reg.get(base_addr_reg);
         
         Data_Memory.put(base_addr + off_set , value);
+        Program_CounterCpy += 4;
        // System.out.println("Memory location: " + Data_Memory);
     }
    // 18
@@ -422,6 +432,7 @@ public void EndSimulation(){
         // doing the operation and saving in the reg 
         
         reg.set(rd_num_int,reg.get(rs_num_int) << imm);
+        Program_CounterCpy += 4;
         
     }
     
@@ -468,6 +479,7 @@ public void EndSimulation(){
         int imm = Integer.parseInt(assembly_line_split[3]);
         
         reg.set(rd, reg.get(rs) ^ reg.get(imm));
+        Program_CounterCpy += 4;
     }
     
     //23
@@ -486,6 +498,7 @@ public void EndSimulation(){
         int imm = Integer.parseInt(assembly_line_split[3]);
         
         reg.set(rd, reg.get(rs) | reg.get(imm));
+        Program_CounterCpy += 4;
     }
     
     //24
@@ -504,6 +517,7 @@ public void EndSimulation(){
         int imm = Integer.parseInt(assembly_line_split[3]);
         
         reg.set(rd, reg.get(rs) & reg.get(imm));
+        Program_CounterCpy += 4;
     }
     
     /****/
@@ -528,6 +542,7 @@ public void EndSimulation(){
         int imm = Integer.parseInt(assembly_line_split[3]);
         
         reg.set(rd , reg.get(rs) >> imm);
+        Program_CounterCpy += 4;
     }
     
     //27
@@ -546,6 +561,7 @@ public void EndSimulation(){
         int shamt = Integer.parseInt(assembly_line_split[3]);
         
         reg.set(rd , reg.get(rs) >> shamt);
+        Program_CounterCpy += 4;
     }
     
     
@@ -566,6 +582,7 @@ public void EndSimulation(){
             }
         }
         reg.set(regd, reg.get(regs1) + reg.get(regs2));
+        Program_CounterCpy += 4;
     }
     //29
     public void sub(String instr) {
@@ -620,6 +637,7 @@ public void EndSimulation(){
             }
         }
         reg.set(regd, reg.get(regs) << shamt);
+        Program_CounterCpy += 4;
     }
     //31
     public void slt(String instr) {
@@ -638,6 +656,7 @@ public void EndSimulation(){
             }
         }
         reg.set(regd, reg.get(regs1) < reg.get(regs2) ? 1 : 0);
+        Program_CounterCpy += 4;
     }
     //32
     public void sltu(String instr) {
@@ -656,6 +675,7 @@ public void EndSimulation(){
             }
         }
         reg.set(regd, Integer.compareUnsigned(reg.get(regs1), reg.get(regs2)) < 0 ? 1 : 0);
+        Program_CounterCpy += 4;
     }
     //33
     public void xor(String instr) {
@@ -674,6 +694,7 @@ public void EndSimulation(){
             }
         }
         reg.set(regd, reg.get(regs1) ^ reg.get(regs2));
+        Program_CounterCpy += 4;
     }
     //34
     public void srl(String instr) {
@@ -692,6 +713,7 @@ public void EndSimulation(){
             }
         }
         reg.set(regd, reg.get(regs) >>> shamt);
+        Program_CounterCpy += 4;
     }
     //35
     public void sra(String instr) {
@@ -710,6 +732,7 @@ public void EndSimulation(){
             }
         }
         reg.set(regd, reg.get(regs) >> shamt);
+        Program_CounterCpy += 4;
     }
     //37
     public void and(String instr) {
@@ -728,6 +751,7 @@ public void EndSimulation(){
             }
         }
         reg.set(regd, reg.get(regs1) & reg.get(regs2));
+        Program_CounterCpy += 4;
     }
 
     //EXTRA INSTRUCTIONS MUL AND DIV
@@ -769,6 +793,7 @@ public void EndSimulation(){
         // Perform MULH operation
         long result = (long) reg.get(regs1) * (long) reg.get(regs2);
         reg.set(regd, (int) (result >> 32)); // Store the high 32 bits of the result
+        Program_CounterCpy += 4;
     }
     //m3
     public void mulhsu(String instr) {
@@ -789,6 +814,7 @@ public void EndSimulation(){
         // Perform MULHSU operation
         long result = (long) reg.get(regs1) * (long) (reg.get(regs2) & 0xFFFFFFFFL);
         reg.set(regd, (int) (result >> 32)); // Store the high 32 bits of the result
+        Program_CounterCpy += 4;
     }
     //m4
     public void mulhu(String instr) {
@@ -809,6 +835,7 @@ public void EndSimulation(){
         // Perform MULHU operation
         long result = (long) (reg.get(regs1) & 0xFFFFFFFFL) * (long) (reg.get(regs2) & 0xFFFFFFFFL);
         reg.set(regd, (int) (result >>> 32)); // Store the high 32 bits of the result
+        Program_CounterCpy += 4;
     }   
     //m5         
     public void div(String instr) {
@@ -830,6 +857,7 @@ public void EndSimulation(){
             reg.set(regd, reg.get(regs1) / reg.get(regs2));
         } else {
             JOptionPane.showMessageDialog(this, "ERROR: DIVISON BY ZERO", "LOGIC ERROR",  JOptionPane.ERROR_MESSAGE);}
+        Program_CounterCpy += 4;
         
     }
     //m6
@@ -856,6 +884,7 @@ public void EndSimulation(){
         } else {
             JOptionPane.showMessageDialog(this, "ERROR: DIVISON BY ZERO", "LOGIC ERROR",  JOptionPane.ERROR_MESSAGE);
         }
+        Program_CounterCpy += 4;
     }
     //m7
     public void rem(String instr) {
@@ -880,7 +909,8 @@ public void EndSimulation(){
             reg.set(regd, dividend % divisor);
         } else {
             JOptionPane.showMessageDialog(this, "ERROR: DIVISON BY ZERO", "LOGIC ERROR",  JOptionPane.ERROR_MESSAGE);}
-        }
+        Program_CounterCpy += 4;
+    }
     
     //m8
     public void remu(String instr) {
@@ -906,6 +936,7 @@ public void EndSimulation(){
         } else {
             JOptionPane.showMessageDialog(this, "ERROR: DIVISON BY ZERO", "LOGIC ERROR",  JOptionPane.ERROR_MESSAGE);
         }
+        Program_CounterCpy += 4;
     }
             
 
