@@ -581,6 +581,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs1) + reg.get(regs2));
         Program_CounterCpy += 4;
     }
@@ -600,6 +605,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs1) - reg.get(regs2));
     }
     //36
@@ -618,6 +628,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs1) | reg.get(regs2));
     }
     //30
@@ -636,6 +651,11 @@ public void EndSimulation(){
                 shamt = Integer.parseInt(part);
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs) << shamt);
         Program_CounterCpy += 4;
     }
@@ -655,6 +675,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs1) < reg.get(regs2) ? 1 : 0);
         Program_CounterCpy += 4;
     }
@@ -674,6 +699,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, Integer.compareUnsigned(reg.get(regs1), reg.get(regs2)) < 0 ? 1 : 0);
         Program_CounterCpy += 4;
     }
@@ -693,6 +723,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs1) ^ reg.get(regs2));
         Program_CounterCpy += 4;
     }
@@ -712,6 +747,11 @@ public void EndSimulation(){
                 shamt = Integer.parseInt(part);
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs) >>> shamt);
         Program_CounterCpy += 4;
     }
@@ -731,6 +771,11 @@ public void EndSimulation(){
                 shamt = Integer.parseInt(part);
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs) >> shamt);
         Program_CounterCpy += 4;
     }
@@ -750,6 +795,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs1) & reg.get(regs2));
         Program_CounterCpy += 4;
     }
@@ -771,6 +821,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         reg.set(regd, reg.get(regs1) * reg.get(regs2));
         Program_CounterCpy +=4;
     }
@@ -790,6 +845,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         // Perform MULH operation
         long result = (long) reg.get(regs1) * (long) reg.get(regs2);
         reg.set(regd, (int) (result >> 32)); // Store the high 32 bits of the result
@@ -811,6 +871,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         // Perform MULHSU operation
         long result = (long) reg.get(regs1) * (long) (reg.get(regs2) & 0xFFFFFFFFL);
         reg.set(regd, (int) (result >> 32)); // Store the high 32 bits of the result
@@ -832,6 +897,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         // Perform MULHU operation
         long result = (long) (reg.get(regs1) & 0xFFFFFFFFL) * (long) (reg.get(regs2) & 0xFFFFFFFFL);
         reg.set(regd, (int) (result >>> 32)); // Store the high 32 bits of the result
@@ -853,6 +923,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         if (reg.get(regs2) != 0) {
             reg.set(regd, reg.get(regs1) / reg.get(regs2));
         } else {
@@ -876,6 +951,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         // Perform DIVU operation
         int dividend = reg.get(regs1);
         int divisor = reg.get(regs2);
@@ -902,6 +982,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         // Perform REM operation
         int dividend = reg.get(regs1);
         int divisor = reg.get(regs2);
@@ -928,6 +1013,11 @@ public void EndSimulation(){
                 }
             }
         }
+         // Check if destination register is x0
+    if (regd == 0){
+        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         // Perform REMU operation
         int dividend = reg.get(regs1);
         int divisor = reg.get(regs2);
