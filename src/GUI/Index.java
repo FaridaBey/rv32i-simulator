@@ -40,6 +40,8 @@ public class Index extends javax.swing.JFrame {
         Test2 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        Test3 = new javax.swing.JButton();
+        Test4 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         StartingAddress = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -94,6 +96,26 @@ public class Index extends javax.swing.JFrame {
         jLabel7.setText("Tests : ");
         jLabel7.setToolTipText("");
 
+        Test3.setBackground(new java.awt.Color(255, 153, 0));
+        Test3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Test3.setForeground(new java.awt.Color(255, 255, 255));
+        Test3.setText("Test 3");
+        Test3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Test3ActionPerformed(evt);
+            }
+        });
+
+        Test4.setBackground(new java.awt.Color(255, 153, 0));
+        Test4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Test4.setForeground(new java.awt.Color(255, 255, 255));
+        Test4.setText("Test 4");
+        Test4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Test4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -101,6 +123,7 @@ public class Index extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Test3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -110,7 +133,8 @@ public class Index extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(Test2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Test1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)))
+                        .addComponent(Test1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
+                    .addComponent(Test4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -128,6 +152,10 @@ public class Index extends javax.swing.JFrame {
                 .addComponent(Test1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Test2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Test3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Test4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -230,7 +258,7 @@ public class Index extends javax.swing.JFrame {
     private void Test1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Test1ActionPerformed
         // TODO add your handling code here:
         AssemblyCode.setText("");
-     StartingAddress.setText("0");
+        StartingAddress.setText("0");
         AssemblyCode.setText("addi x1, x0, 10"+"\n"+"addi x20, x0, 2000" + "\n"+ "addi x2, x0, 20" + "\n" + "add x3, x2, x1" + "\n"+"sub x4, x1, x2" + "\n" + "sb x1, 0 (x20)" + "\n" + "sh x2, 4 (x20)" + "\n" + "sw x4, 8 (x20)" + "\n" + "lb x10, 8 (x20)" + "\n" + "lh x10, 8 (x20)" + "\n" + "lw x10, 8 (x20)" + "\n" + "lbu x10, 8 (x20)" + "\n" + "lhu x10, 8 (x20)" + "\n" + "slli x11, x1, 2" + "\n" + "srli x12, x1,2" + "\n" + "srai x13, x1, 2");
         
     }//GEN-LAST:event_Test1ActionPerformed
@@ -251,6 +279,20 @@ public class Index extends javax.swing.JFrame {
         +"\n"+ "addi x6,x6,-1" +"\n"+ "jal x8,132" +"\n"+ "addi x9,x9,10"+"\n"+ "addi x10,x10,7"+"\n"+ "bne x9,x10,164"+"\n"+"addi x10,x10,1"+"\n"+"jal x11,152"+"\n"+"addi x12,x12,1"+"\n"+"addi x13,x13,3"+"\n"+"bge x12,x13,184" +"\n"+"addi x12,x12,1"+"\n"+"jal x14,172"+"\n"+"addi x15,x15,5"+"\n"+"addi x16,x16,2"+"\n"+"bltu x15,x16,204"+"\n"+"addi x15,x15,-1"+"\n"+"jal x18,192"+"\n"+"addi x19,x19,1"+"\n"+"addi x20,x20,3"+"\n"+"bgeu x19,x20,224"+"\n"+"addi x19,x19,1"+"\n"+"jal x21,212"+"\n"+"ECALL"); //Needs to be reworked
         
     }//GEN-LAST:event_Test2ActionPerformed
+
+    private void Test3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Test3ActionPerformed
+        // TODO add your handling code here:
+        AssemblyCode.setText("");
+        StartingAddress.setText("0");
+        AssemblyCode.setText("addi x1, x0, 1" + "\n" + "addi x2, x0, 2" + "\n" + "addi x3, x0, -5" + "\n" + "addi x4, x0, 2" + "\n" + "slti x10, x1, 5" + "\n" + "slti x10, x1, -5" + "\n" + "sltiu x11, x1, 5" + "\n" + "sltiu x11, x1, -5" + "\n" + "slt x12,x1, x3" + "\n" + "slt x12, x1, x2" + "\n" + "sltu x13, x1, x3" + "\n" + "sltu x13, x1, x2 " + "\n" + "sll x14,x2,x4");
+    }//GEN-LAST:event_Test3ActionPerformed
+
+    private void Test4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Test4ActionPerformed
+        // TODO add your handling code here:
+        AssemblyCode.setText("");
+        StartingAddress.setText("0");
+        AssemblyCode.setText("addi x1, x0, 20" + "\n" + "addi x2, x0, 30" + "\n" + "addi x3, x0, 2" + "\n" + "xori x10, x1, 12" + "\n" + "ori x11, x1, 12" + "\n" + "andi x12, x1, 12"+ "\n" + "xor x13, x1, x2" + "\n" + "or x14, x1, x2" + "\n" + "and x15, x1, x2" + "\n" + "srl x16, x2, x3" + "\n" + "sra x17, x2, x3"+"ECALL");
+    }//GEN-LAST:event_Test4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,6 +336,8 @@ public class Index extends javax.swing.JFrame {
     private javax.swing.JButton Submit;
     private javax.swing.JButton Test1;
     private javax.swing.JButton Test2;
+    private javax.swing.JButton Test3;
+    private javax.swing.JButton Test4;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

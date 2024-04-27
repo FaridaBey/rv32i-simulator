@@ -436,6 +436,30 @@ public void EndSimulation(){
         
     }
     
+     public void SLTI (String instr) {
+    String[] assembly_line_split = instr.split("[\\s,]+");
+    
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs_num_string = assembly_line_split[2].substring(1);
+        int rs = Integer.parseInt(rs_num_string);
+        
+        // getting the immediate value
+        int imm = Integer.parseInt(assembly_line_split[3]);
+        
+        if(reg.get(rs) < Math.abs(imm))
+        {
+        reg.set(rd , 1);
+        }
+        else
+        {
+        reg.set(rd, 0);
+        }
+        Program_CounterCpy +=4;
+    }
     // 21
     public void SLTIU (String instr) {
     
@@ -452,7 +476,7 @@ public void EndSimulation(){
         // getting the immediate value
         int imm = Integer.parseInt(assembly_line_split[3]);
         
-        if(reg.get(rs) < imm)
+        if(reg.get(rs) < Math.abs(imm))
         {
         reg.set(rd , 1);
         }
@@ -478,9 +502,10 @@ public void EndSimulation(){
         // getting the immediate value
         int imm = Integer.parseInt(assembly_line_split[3]);
         
-        reg.set(rd, reg.get(rs) ^ reg.get(imm));
+        reg.set(rd, reg.get(rs) ^ imm);
         Program_CounterCpy += 4;
     }
+
     
     //23
     public void ORI (String instr) {
@@ -497,9 +522,10 @@ public void EndSimulation(){
         // getting the immediate value
         int imm = Integer.parseInt(assembly_line_split[3]);
         
-        reg.set(rd, reg.get(rs) | reg.get(imm));
+        reg.set(rd, reg.get(rs) | imm);
         Program_CounterCpy += 4;
     }
+
     
     //24
     public void ANDI (String instr) {
@@ -516,9 +542,8 @@ public void EndSimulation(){
         // getting the immediate value
         int imm = Integer.parseInt(assembly_line_split[3]);
         
-        reg.set(rd, reg.get(rs) & reg.get(imm));
-        Program_CounterCpy += 4;
-    }
+        reg.set(rd, reg.get(rs) & imm);
+        Program_CounterCpy+=4;}
     
     /****/
 
@@ -580,6 +605,7 @@ public void EndSimulation(){
                     regs2 = Integer.parseInt(part.substring(1));
                 }
             }
+            Program_CounterCpy+=4;
         }
          // Check if destination register is x0
     if (regd == 0){
@@ -604,6 +630,7 @@ public void EndSimulation(){
                     regs2 = Integer.parseInt(part.substring(1));
                 }
             }
+            Program_CounterCpy+=4;
         }
          // Check if destination register is x0
     if (regd == 0){
@@ -634,30 +661,28 @@ public void EndSimulation(){
         return;
     }
         reg.set(regd, reg.get(regs1) | reg.get(regs2));
+        Program_CounterCpy+=4;
     }
     //30
     public void sll(String instr) {
-        String[] parts = instr.split("[,\\s]+");
-        int regd = 0, regs = 0, shamt = 0;
-        for (int i = 1; i < parts.length; i++) {
-            String part = parts[i];
-            if (part.startsWith("x")) {
-                if (regd == 0) {
-                    regd = Integer.parseInt(part.substring(1));
-                } else {
-                    regs = Integer.parseInt(part.substring(1));
-                }
-            } else {
-                shamt = Integer.parseInt(part);
-            }
-        }
-         // Check if destination register is x0
-    if (regd == 0){
-        JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-        reg.set(regd, reg.get(regs) << shamt);
-        Program_CounterCpy += 4;
+     String[] assembly_line_split = instr.split("[\\s,]+");
+        
+        //getting the destination register number
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd_num_int = Integer.parseInt(rd_num_string);
+        
+        // getting the source register number
+        String rs1_num_string = assembly_line_split[2].substring(1);
+        int rs1_num_int = Integer.parseInt(rs1_num_string);
+        
+        // getting the source register number
+        String rs2_num_string = assembly_line_split[2].substring(1);
+        int rs2_num_int = Integer.parseInt(rs2_num_string);
+                
+        // doing the operation and saving in the reg 
+        
+        reg.set(rd_num_int,reg.get(rs1_num_int) << rs2_num_int);
+        Program_CounterCpy +=4;
     }
     //31
     public void slt(String instr) {
@@ -1166,7 +1191,8 @@ switch(opcode){
     //14
     case "lbu":{ LHU(instruction); }
     break;
-    
+    case "slti": {SLTI(instruction);}
+    break;
     //15
     case "lhu":{ LHU(instruction); }
     break;
