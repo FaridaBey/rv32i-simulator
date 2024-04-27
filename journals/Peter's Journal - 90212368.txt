@@ -1,0 +1,9 @@
+April 17, 11:48PM: added support for addi instructions. wrote the first part
+of the simulator that creates and initialises the registers and takes input from user
+April 20, 10:53PM: added support for SW - SB - SH instructions. 
+april 21, 02:20PM:added support for SLTI instruction. 
+April 22, 11:10PM: added support for BGEU - LB-LW-LW-LBU-LHU instructions. 
+April 27, 11:10PM: added conditions to prevent changeing x0. 
+April 27, 12:30PM: fixed program counter.
+April 27, 12:30PM: fixed errors in jal - jalr.
+April 27, 10:00PM: fixed errors in xori - andi - ori and created the test cases.

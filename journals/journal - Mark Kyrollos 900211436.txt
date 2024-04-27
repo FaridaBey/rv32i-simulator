@@ -1,0 +1,12 @@
+April 22, 2:07PM: added instructions SLTIU, XORI, ORI, ANDI, SRLI, and SRAI
+with their correspinding switch-case statements
+
+April 25, 10:23M: added compressed instructions such as C.LI . Also i updated all my instructions
+to make display an output error message if the destination register (rd) is ever zero.
+
+April 27, 5:42PM: added more compressed instructions such as C.ADDI and C.ANDI as well as
+updating the switch-case accordingly
+
+April 27, 5:57PM: added a program counter to all my instructions.
+
+April 27 7:23PM: worked on our report, included all the guidlines and provided a step-by-step guide that shows how to simulate our program

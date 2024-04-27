@@ -1,0 +1,21 @@
+April 17, 8:25 PM: Created GUI, added support for ADDI and LUI, and added an Array List to simulate the 32 registers. 
+
+April 17, 11:56 PM: Added Viewer and its Components, However, ADDI is not printing correctly  
+
+April 18, 9:31 AM: Fixed ADDI, added Components for Instruction Memory and Data Memory, and their printing functions 
+
+April 18, 1:40 PM: Added Program Counter, Restart Button, Exit, and Progress Bar, made instructions move with program counter instead of a generic counter. 
+
+April 20, 3:34 PM: Added Support for AUIPC, JAL, and JALR and fixed issues with restart button.
+
+April 20, 12:20 PM: Added Support for BEQ, BNE, BLT, and created a form for the user to enter data into the data memory. 
+
+April 22, 11:16 PM: Added Support for BLTU and BGEU, and created a drop-down menu that allows the user to switch between decimal, binary, and hexadecimal to be viewed in registers. 
+
+April 23, 1:10 PM: fixed issues with BLT, JALR, JAl, and AUIPC, and fixed progress bar. 
+
+April 24, 12:30 PM: Added support for FENCE, ECALL, and EBREAK, made a condition for 10 instruction to output an error if a modification is detected in register x0
+
+April 25, 12:33 PM: Added Exception Handlers in Viewer and Index to deal with thrown Exceptions
+
+April 26, 6:57 PM:  Added Test case 1, and fixed minor errors in Viewer and NextBttn.

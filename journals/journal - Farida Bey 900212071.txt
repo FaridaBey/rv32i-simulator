@@ -1,0 +1,12 @@
+
+April 20, 10:30 PM: Implemented support for 7 instructions: add, sub, or, xor, sll, slt, sltu. The implementation includes parsing assembly instructions, performing the specified operations, and updating registers accordingly.
+
+April 20, 11:20 PM: Added support for 3 more instructions: srl, sra, and. Provided implementation details for each of the 10 instructions; The implementation includes parsing assembly instructions, performing the specified operations, and updating registers accordingly.
+
+April 21, 1:00 PM: Met with the rest to debug an error in the logic and view.
+
+April 22, 10:00 AM: Added the 10 instructions to the master branch and added the hexadecimal and binary print functions. Also added support for the 8 mul/div instructions to complete the RISC-V 32M instruction set.
+
+April 27, 7:00 PM: Added reg 0 checker (x0 will always be 0 and we can't use it as a destination register) to all the instructions I did
+
+April 27, 8:00 PM: Started drafting the report, outlining the project scope, implementation details, and design decisions. 
