@@ -2,435 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package GUI;
-
-
-import java.awt.Color;
-import java.util.*;
-import javax.swing.JOptionPane;
-
-
-/**
- *
- * @author Hassan
- */
-
-
-
-
-
-public class Viewer extends javax.swing.JFrame {
-//Global Varibels
-public  Map <Integer, Integer> Data_Memory; // Memory
-public  Map <Integer, String> Instruction_Memory = new LinkedHashMap<>(); //sets the instructions in order
-public  Map <Integer, Integer> intialDataMem; // Used to restart
-public  ArrayList<Integer> reg = new ArrayList<>(Collections.nCopies(32, 0)); // Registers
-String[] Instruction; // to be able to store instruction sequentially 
-String Assembly_CodeCpy; int Program_CounterCpy, MaxPR, intialProgramCounter , counter; //Misall
-
-
-//Misc
-public void EndSimulation(){
-  NextBttn.setVisible(false);
-  Complete.setVisible(true);
-}
-//Parsing Functions
-   public  String extractOpcode(String instruction) {
-        // Splitting the instruction by whitespace or comma
-        String[] parts = instruction.split("[,\\s]+");
-        // Returning the first part, which is the opcode
-        return parts[0];
-    }
-//Instruction Functions 
-   // 1
-   public void LUI (String instr){
-        String[] parts = instr.split("[,\\s]+");
-            int regd = 0, imm = 0;
-        
-        for (int i = 1; i < parts.length; i++) {
-            String part = parts[i];
-            if (part.startsWith("x")) {regd = Integer.parseInt(part.substring(1));} 
-            else {imm = Integer.parseInt(part);}
-            }
-          int immShifted = (imm << 12);
-          if(regd == 0){
-          
-          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-          return;
-          }
-        reg.set(regd, immShifted);}
-   // 2
-   public void AUIPC (String instr){
-       String[] parts = instr.split("[,\\s]+");
-            int regd = 0, imm = 0;
-        for (int i = 1; i < parts.length; i++) {
-            String part = parts[i];
-            if (part.startsWith("x")) {regd = Integer.parseInt(part.substring(1));} 
-            else {imm = Integer.parseInt(part);}
-            }
-         int immShifted = (imm << 12)+Program_CounterCpy;
-             if(regd == 0){
-          
-          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-          return;
-          }
-         reg.add(regd, immShifted);
-   }
-   //3
-   public void JAL (String instr) {
-   // jal rd, label
-    String[] assembly_line_split = instr.split("[\\s,]+");
-    String rsd_string = assembly_line_split[1].substring(1);
-    int rsd= Integer.parseInt(rsd_string);
-    int label_addr = Integer.parseInt(assembly_line_split[2]);
-        if(rsd == 0){
-          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-          return;
-          }
-    reg.set(rsd, Program_CounterCpy+4);
-    Program_CounterCpy = label_addr;
-    //Program_CounterCpy -= 4;
-    counter--;
-   }
-   // 4
-   public void JALR(String instr) { 
-   String[] assembly_line_split = instr.split("[\\s,]+");
-   int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
-    int length_temp = assembly_line_split[3].length();
-    String base_reg_string = assembly_line_split[3].substring(2,length_temp-1);
-    int base_addr_reg = Integer.parseInt(base_reg_string);
-    int base_addr = reg.get(base_addr_reg);
-        
-    String off_set_string = assembly_line_split[2];
-    int off_set = Integer.parseInt(off_set_string);
-   
-   reg.set(rd1, Program_CounterCpy+4);
-   Program_CounterCpy =  base_addr + off_set; 
-   counter--;
-   }
-   
-   
-   
-   
-   //5
-   public void BEQ(String instr){  
-   String[] assembly_line_split = instr.split("[\\s,]+");
-   int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
-   int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
-   int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(reg.get(rd1) == reg.get(rd2)){Program_CounterCpy = label_addr;}
-   Program_CounterCpy += 4;
-   counter--;
-   }
-   //6
-     public void BNE (String instr){
-   String[] assembly_line_split = instr.split("[\\s,]+");
-   int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
-   int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
-   int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(reg.get(rd1) != reg.get(rd2)){Program_CounterCpy = label_addr;}   
-   Program_CounterCpy -= 4;
-   counter--;
-   }
-   //7
-   public void BLT (String instr){
-   String[] assembly_line_split = instr.split("[\\s,]+");
-   int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
-   int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
-   int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(reg.get(rd1) < reg.get(rd2)){Program_CounterCpy = label_addr;} 
-   Program_CounterCpy -= 4;
-   counter--;
-   }  
-   //8
-     public void BGE (String instr){
-   String[] assembly_line_split = instr.split("[\\s,]+");
-   int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
-   int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
-   int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(reg.get(rd1) >= reg.get(rd2)){Program_CounterCpy = label_addr;}  
-   Program_CounterCpy -= 4;
-   counter--;
-   }  
-   //9
-     public void BLTU (String instr){
-       String[] assembly_line_split = instr.split("[\\s,]+");    
-       int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
-       int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
-       int label_addr = Integer.parseInt(assembly_line_split[3]);
-        int value_rs1_absolute = Math.abs(reg.get(rd1));
-        int value_rs2_absolute = Math.abs(reg.get(rd2));
-        if ((value_rs1_absolute < value_rs2_absolute)){Program_CounterCpy = label_addr;}
-        Program_CounterCpy -= 4;
-        counter--;
-       
-     }
-   // 10
-   public  void BGEU (String instr){
-   String[] assembly_line_split = instr.split("[\\s,]+");
-   int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
-   int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
-   int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(Math.abs(reg.get(rd1)) >= Math.abs(reg.get(rd2))){Program_CounterCpy = label_addr;} 
-   Program_CounterCpy -= 4;
-   counter--;
-    }
-   
-   // 11
-   public  void LB (String instr){
-   String[] parts = instr.split("[,\\s]+");
-        
-        String rd_string = parts[1].substring(1);
-        int rd_int = Integer.parseInt(rd_string);
-        
-        // condition to keep x0 zero
-        if (rd_int == 0){
-            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        String off_set_string = parts[2];
-        int off_set = Integer.parseInt(off_set_string);
-        
-        int length_temp = parts[3].length();
-        String base_reg_string = parts[3].substring(2,length_temp-1);
-        int base_addr_reg = Integer.parseInt(base_reg_string);
-        int base_addr = reg.get(base_addr_reg);
-        
-        int value = Data_Memory.get(base_addr + off_set);
-        
-        reg.set(rd_int,value);
-    }
-   
-   // 12
-   public  void LH (String instr){
-   String[] parts = instr.split("[,\\s]+");
-        
-        String rd_string = parts[1].substring(1);
-        int rd_int = Integer.parseInt(rd_string);
-        
-        // condition to keep x0 zero
-        if (rd_int == 0){
-            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        String off_set_string = parts[2];
-        int off_set = Integer.parseInt(off_set_string);
-        int length_temp = parts[3].length();
-        String base_reg_string = parts[3].substring(2,length_temp-1);
-        int base_addr_reg = Integer.parseInt(base_reg_string);
-        int base_addr = reg.get(base_addr_reg);
-        
-        int value = Data_Memory.get(base_addr + off_set);
-        
-        reg.set(rd_int,value);
-    }
-   
-   // 13
-   public  void LW (String instr){
-   String[] parts = instr.split("[,\\s]+");
-        
-        String rd_string = parts[1].substring(1);
-        int rd_int = Integer.parseInt(rd_string);
-        
-        // condition to keep x0 zero
-        if (rd_int == 0){
-            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        String off_set_string = parts[2];
-        int off_set = Integer.parseInt(off_set_string);
-        
-        int length_temp = parts[3].length();
-        String base_reg_string = parts[3].substring(2,length_temp-1);
-        int base_addr_reg = Integer.parseInt(base_reg_string);
-        int base_addr = reg.get(base_addr_reg);
-        
-        
-        int value = Data_Memory.get(base_addr + off_set);
-        int value_unsinged = Math.abs(value);
-        
-        reg.set(rd_int,value_unsinged);
-        Program_CounterCpy +=4;
-    }
-   
-   // 14
-   public  void LBU (String instr){
-   String[] parts = instr.split("[,\\s]+");
-        
-        String rd_string = parts[1].substring(1);
-        int rd_int = Integer.parseInt(rd_string);
-        // condition to keep x0 zero
-        if (rd_int == 0){
-            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        String off_set_string = parts[2];
-        int off_set = Integer.parseInt(off_set_string);
-        
-        int length_temp = parts[3].length();
-        String base_reg_string = parts[3].substring(2,length_temp-1);
-        int base_addr_reg = Integer.parseInt(base_reg_string);
-        int base_addr = reg.get(base_addr_reg);
-        
-        
-        int value = Data_Memory.get(base_addr + off_set);
-        int value_unsinged = Math.abs(value);
-        reg.set(rd_int,value_unsinged);
-    }
-   
-   // 15
-   public  void LHU (String instr){
-   String[] parts = instr.split("[,\\s]+");
-        
-        String rd_string = parts[1].substring(1);
-        int rd_int = Integer.parseInt(rd_string);
-        // condition to keep x0 zero
-        if (rd_int == 0){
-            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-            return;
-        }        
-        
-        String off_set_string = parts[2];
-        int off_set = Integer.parseInt(off_set_string);
-        
-        int length_temp = parts[3].length();
-        String base_reg_string = parts[3].substring(2,length_temp-1);
-        int base_addr_reg = Integer.parseInt(base_reg_string);
-        int base_addr = reg.get(base_addr_reg);
-       // System.out.println("BASE addr  " + base_addr + "\n");
-        
-        int value = Data_Memory.get(base_addr + off_set);
-        int value_unsinged = Math.abs(value);
-        reg.set(rd_int,value_unsinged);
-    }
-   
-   // 16
-   public  void SH (String instr){
-   String[] parts = instr.split("[,\\s]+");
-        
-        String value_reg = parts[1].substring(1);
-        int value_reg_int = Integer.parseInt(value_reg);
-        int value = reg.get(value_reg_int);
-      //  System.out.println("VALUE IN SOURCE REG " + value + "\n" );
-        
-        
-        String off_set_string = parts[2];
-        int off_set = Integer.parseInt(off_set_string);
-      //  System.out.println("OFFset " + off_set+ "\n");
-        
-        int length_temp = parts[3].length();
-        String base_reg_string = parts[3].substring(2,length_temp-1);
-        int base_addr_reg = Integer.parseInt(base_reg_string);
-        int base_addr = reg.get(base_addr_reg);
-      //  System.out.println("BASE addr  " + base_addr + "\n");
-        
-        Data_Memory.put(base_addr + off_set , value);
-        
-       // System.out.println("Memory location: " + Data_Memory);
-    }
-   
-   // 17
-   public  void SB (String instr){
-   String[] parts = instr.split("[,\\s]+");
-        
-        String value_reg = parts[1].substring(1);
-        int value_reg_int = Integer.parseInt(value_reg);
-        int value = reg.get(value_reg_int);
-        
-        
-        String off_set_string = parts[2];
-        int off_set = Integer.parseInt(off_set_string);
-        
-        int length_temp = parts[3].length();
-        String base_reg_string = parts[3].substring(2,length_temp-1);
-        int base_addr_reg = Integer.parseInt(base_reg_string);
-        int base_addr = reg.get(base_addr_reg);
-        
-        Data_Memory.put(base_addr + off_set , value);
-       // System.out.println("Memory location: " + Data_Memory);
-    }
-   // 18
-   public  void SW (String instr){
-   String[] parts = instr.split("[,\\s]+");
-        
-        String value_reg = parts[1].substring(1);
-        int value_reg_int = Integer.parseInt(value_reg);
-        int value = reg.get(value_reg_int);
-        
-        
-        String off_set_string = parts[2];
-        int off_set = Integer.parseInt(off_set_string);
-        
-        int length_temp = parts[3].length();
-        String base_reg_string = parts[3].substring(2,length_temp-1);
-        int base_addr_reg = Integer.parseInt(base_reg_string);
-        int base_addr = reg.get(base_addr_reg);
-        
-        Data_Memory.put(base_addr + off_set , value);
-        Program_CounterCpy +=4;
-      // System.out.println("Memory location: " + Memory);
-    }
-   
-   //19
-   public void ADDI (String instr) {
-    String[] assembly_line_split = instr.split("[\\s,]+");
-        
-        //getting the destination register number
-        String rd_num_string = assembly_line_split[1].substring(1);
-        int rd_num_int = Integer.parseInt(rd_num_string);
-        // condition to keep x0 zero
-        if (rd_num_int == 0){
-            JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-            return;
-        }        
-        // getting the source register number
-        String rs_num_string = assembly_line_split[2].substring(1);
-        int rs_num_int = Integer.parseInt(rs_num_string);
-                
-        //getting the immidate value 
-        int imm = Integer.parseInt(assembly_line_split[3]);
-                
-        // doing the operation and saving in the reg 
-        
-         reg.set(rd_num_int,reg.get(rs_num_int)+imm);
-         Program_CounterCpy +=4;
-        
-//        for(int i = 0; i<32;i++){    // populate Registers  
-//        
-//        System.out.println("ADDI FUNCTION OUTPUT : "+"x" + i + ": " + reg.get(i)); //Test
-//        }
-//            System.out.println("------------------------------------------------------"); //Test 
-}
-   
-  // 20
-    public  void SLLI (String instr){
-        String[] assembly_line_split = instr.split("[\\s,]+");
-        
-        //getting the destination register number
-        String rd_num_string = assembly_line_split[1].substring(1);
-        int rd_num_int = Integer.parseInt(rd_num_string);
-        
-        // getting the source register number
-        String rs_num_string = assembly_line_split[2].substring(1);
-        int rs_num_int = Integer.parseInt(rs_num_string);
-                
-        //getting the immidate value 
-        int imm = Integer.parseInt(assembly_line_split[3]);
-                
-        // doing the operation and saving in the reg 
-        if(rd_num_int == 0){
-          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
-          return;
-          }
-        reg.set(rd_num_int,reg.get(rs_num_int) << imm);
-        
-    }
-    
-    // 21
-    public void SLTIU (String instr) {
-    
     String[] assembly_line_split = instr.split("[\\s,]+");
     
         //getting the destination register number
@@ -448,7 +19,7 @@ public void EndSimulation(){
           return;
           }
         
-        if(rs < imm)
+        if(reg.get(rs) < imm)
         {
         reg.set(rd , 1);
         }
@@ -456,6 +27,7 @@ public void EndSimulation(){
         {
         reg.set(rd, 0);
         }
+        Program_CounterCpy +=4;
         
     }
     
@@ -966,6 +538,33 @@ public void EndSimulation(){
         
         }
     }
+    
+    public void c_andi(String instr)
+    {   String[] assembly_line_split = instr.split("[\\s,]+");
+    
+        int imm_se = 0;
+        
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        String imm_string = assembly_line_split[2].substring(1);
+        int imm = Integer.parseInt(imm_string);
+        
+        if(rd == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
+        
+        if ((imm & (1 << 5)) != 0) {
+        imm |= 0xC0;
+        imm_se = imm; // Sign extend the immediate
+        }
+        
+        rd = rd & imm_se;
+        reg.set(rd, reg.get(rd) & reg.get(imm_se));
+    }
+    
+    public void c_addi
             
 
 //Processing Instructions
@@ -1115,7 +714,8 @@ switch(opcode){
     //c.li
     case "c.li" : {c_li(instruction); }
     break;
-    
+    case "c.andi" : {c_andi(instruction); }
+    break;
     case "FENCE": {EndSimulation(); ProgressBar.setValue(ProgressBar.getMaximum()); Complete.setText("HALTING INSTRUCTION (FENCE)"); Complete.setForeground(Color.red);}
     break;
     case "ECALL": {EndSimulation(); ProgressBar.setValue(ProgressBar.getMaximum());Complete.setText("HALTING INSTRUCTION (ECALL)"); Complete.setForeground(Color.red); ;}
@@ -1205,6 +805,7 @@ public Viewer(String Assembly_Code, int Program_Counter, Map <Integer, Integer> 
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -1558,7 +1159,7 @@ public Viewer(String Assembly_Code, int Program_Counter, Map <Integer, Integer> 
                
             }
         });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AssemblyCode;
@@ -1590,5 +1191,3 @@ public Viewer(String Assembly_Code, int Program_Counter, Map <Integer, Integer> 
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
-}
-
