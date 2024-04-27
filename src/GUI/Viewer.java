@@ -970,6 +970,7 @@ public void EndSimulation(){
         }
         
         }
+        Program_CounterCpy += 4;
     }
     
     // c.andi
@@ -996,6 +997,7 @@ public void EndSimulation(){
         
         rd = rd & imm_se;
         reg.set(rd, reg.get(rd) & reg.get(imm_se));
+        Program_CounterCpy += 4;
     }
             
     public void c_addi(String instr)
@@ -1023,6 +1025,7 @@ public void EndSimulation(){
         
         rd = rd + nzimm_se;
         reg.set(rd, reg.get(rd) + reg.get(nzimm_se));
+        Program_CounterCpy += 4;
 }
 
 //Processing Instructions
