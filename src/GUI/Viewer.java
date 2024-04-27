@@ -420,7 +420,10 @@ public void EndSimulation(){
         int imm = Integer.parseInt(assembly_line_split[3]);
                 
         // doing the operation and saving in the reg 
-        
+        if(rd_num_int == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
         reg.set(rd_num_int,reg.get(rs_num_int) << imm);
         
     }
@@ -440,8 +443,12 @@ public void EndSimulation(){
         
         // getting the immediate value
         int imm = Integer.parseInt(assembly_line_split[3]);
+         if(rd == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
         
-        if(reg.get(rs) < imm)
+        if(rs < imm)
         {
         reg.set(rd , 1);
         }
@@ -449,7 +456,7 @@ public void EndSimulation(){
         {
         reg.set(rd, 0);
         }
-        Program_CounterCpy +=4;
+        
     }
     
     //22
@@ -467,6 +474,10 @@ public void EndSimulation(){
         // getting the immediate value
         int imm = Integer.parseInt(assembly_line_split[3]);
         
+        if(rd == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
         reg.set(rd, reg.get(rs) ^ reg.get(imm));
     }
     
@@ -484,7 +495,10 @@ public void EndSimulation(){
         
         // getting the immediate value
         int imm = Integer.parseInt(assembly_line_split[3]);
-        
+        if(rd == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
         reg.set(rd, reg.get(rs) | reg.get(imm));
     }
     
@@ -503,6 +517,10 @@ public void EndSimulation(){
         // getting the immediate value
         int imm = Integer.parseInt(assembly_line_split[3]);
         
+        if(rd == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
         reg.set(rd, reg.get(rs) & reg.get(imm));
     }
     
@@ -526,7 +544,10 @@ public void EndSimulation(){
         
         // getting the immediate value
         int imm = Integer.parseInt(assembly_line_split[3]);
-        
+        if(rd == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
         reg.set(rd , reg.get(rs) >> imm);
     }
     
@@ -545,6 +566,10 @@ public void EndSimulation(){
         // getting the immediate value
         int shamt = Integer.parseInt(assembly_line_split[3]);
         
+        if(rd == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
         reg.set(rd , reg.get(rs) >> shamt);
     }
     
@@ -907,6 +932,40 @@ public void EndSimulation(){
             JOptionPane.showMessageDialog(this, "ERROR: DIVISON BY ZERO", "LOGIC ERROR",  JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    /* COMPRESSED RISC-V INSTRUCTION SET */
+    //
+    //
+    // c.li s1, 0    # has no rs only a rd and imm
+    
+    public void c_li (String instr)
+    {
+        String[] assembly_line_split = instr.split("[\\s,]+");
+        
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        String imm_string = assembly_line_split[2].substring(1);
+        int imm = Integer.parseInt(imm_string);
+        
+        if(rd == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
+        
+        if (rd != 0) {
+        
+        // sign extend the 6-bit immediate value to 8 bits
+        if ( (imm & 0x20)!= 0 )
+        {
+            imm = imm | 0xC0;
+            // loading imm into the register
+            rd = imm;
+            reg.set(rd , reg.get(imm));
+        }
+        
+        }
+    }
             
 
 //Processing Instructions
@@ -1053,6 +1112,10 @@ switch(opcode){
     //m8
     case "remu": {remu(instruction);}
     break;
+    //c.li
+    case "c.li" : {c_li(instruction); }
+    break;
+    
     case "FENCE": {EndSimulation(); ProgressBar.setValue(ProgressBar.getMaximum()); Complete.setText("HALTING INSTRUCTION (FENCE)"); Complete.setForeground(Color.red);}
     break;
     case "ECALL": {EndSimulation(); ProgressBar.setValue(ProgressBar.getMaximum());Complete.setText("HALTING INSTRUCTION (ECALL)"); Complete.setForeground(Color.red); ;}
