@@ -122,9 +122,10 @@ public void EndSimulation(){
    int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
    int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
    int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(reg.get(rd1) == reg.get(rd2)){Program_CounterCpy = label_addr;}
+   if(reg.get(rd1) == reg.get(rd2)){Program_CounterCpy = label_addr; return;}  
    Program_CounterCpy += 4;
    counter--;
+  
    }
    //6
      public void BNE (String instr){
@@ -132,7 +133,7 @@ public void EndSimulation(){
    int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
    int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
    int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(reg.get(rd1) != reg.get(rd2)){Program_CounterCpy = label_addr;}   
+   if(reg.get(rd1) != reg.get(rd2)){Program_CounterCpy = label_addr; return;}   
    Program_CounterCpy += 4;
    counter--;
    }
@@ -142,7 +143,7 @@ public void EndSimulation(){
    int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
    int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
    int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(reg.get(rd1) < reg.get(rd2)){Program_CounterCpy = label_addr;} 
+   if(reg.get(rd1) < reg.get(rd2)){Program_CounterCpy = label_addr;return;} 
    Program_CounterCpy += 4;
    counter--;
    }  
@@ -152,7 +153,7 @@ public void EndSimulation(){
    int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
    int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
    int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(reg.get(rd1) >= reg.get(rd2)){Program_CounterCpy = label_addr;}  
+   if(reg.get(rd1) >= reg.get(rd2)){Program_CounterCpy = label_addr;return;}  
    Program_CounterCpy += 4;
    counter--;
    }  
@@ -164,7 +165,7 @@ public void EndSimulation(){
        int label_addr = Integer.parseInt(assembly_line_split[3]);
         int value_rs1_absolute = Math.abs(reg.get(rd1));
         int value_rs2_absolute = Math.abs(reg.get(rd2));
-        if ((value_rs1_absolute < value_rs2_absolute)){Program_CounterCpy = label_addr;}
+        if ((value_rs1_absolute < value_rs2_absolute)){Program_CounterCpy = label_addr;return;}
         Program_CounterCpy += 4;
         counter--;
        
@@ -175,7 +176,7 @@ public void EndSimulation(){
    int rd1 = Integer.parseInt(assembly_line_split[1].substring(1));
    int rd2 = Integer.parseInt(assembly_line_split[2].substring(1));
    int label_addr = Integer.parseInt(assembly_line_split[3]);
-   if(Math.abs(reg.get(rd1)) >= Math.abs(reg.get(rd2))){Program_CounterCpy = label_addr;} 
+   if(Math.abs(reg.get(rd1)) >= Math.abs(reg.get(rd2))){Program_CounterCpy = label_addr;return;} 
    Program_CounterCpy += 4;
    counter--;
     }
@@ -201,8 +202,8 @@ public void EndSimulation(){
         int base_addr = reg.get(base_addr_reg);
         
         int value = Data_Memory.get(base_addr + off_set);
-        
-        reg.set(rd_int,value);
+        int firstByte = (byte) value;
+        reg.set(rd_int,firstByte);
         Program_CounterCpy += 4;
     }
    
@@ -224,10 +225,9 @@ public void EndSimulation(){
         String base_reg_string = parts[3].substring(2,length_temp-1);
         int base_addr_reg = Integer.parseInt(base_reg_string);
         int base_addr = reg.get(base_addr_reg);
-        
         int value = Data_Memory.get(base_addr + off_set);
-        
-        reg.set(rd_int,value);
+       int firstTwoBytes = (short) value;
+       reg.set(rd_int,firstTwoBytes);
         Program_CounterCpy += 4;
     }
    
@@ -283,7 +283,8 @@ public void EndSimulation(){
         
         int value = Data_Memory.get(base_addr + off_set);
         int value_unsinged = Math.abs(value);
-        reg.set(rd_int,value_unsinged);
+        int firstByte = (byte) value_unsinged;
+        reg.set(rd_int,firstByte);
         Program_CounterCpy += 4;
     }
    
@@ -310,7 +311,8 @@ public void EndSimulation(){
         
         int value = Data_Memory.get(base_addr + off_set);
         int value_unsinged = Math.abs(value);
-        reg.set(rd_int,value_unsinged);
+        int firstByte = (short) value_unsinged;
+        reg.set(rd_int,firstByte);
         Program_CounterCpy += 4;
     }
    
@@ -333,8 +335,8 @@ public void EndSimulation(){
         int base_addr_reg = Integer.parseInt(base_reg_string);
         int base_addr = reg.get(base_addr_reg);
       //  System.out.println("BASE addr  " + base_addr + "\n");
-        
-        Data_Memory.put(base_addr + off_set , value);
+     int half_word = (short) value;  
+        Data_Memory.put(base_addr + off_set,half_word);
         Program_CounterCpy += 4;
         
        // System.out.println("Memory location: " + Data_Memory);
@@ -368,8 +370,6 @@ public void EndSimulation(){
         String value_reg = parts[1].substring(1);
         int value_reg_int = Integer.parseInt(value_reg);
         int value = reg.get(value_reg_int);
-        
-        
         String off_set_string = parts[2];
         int off_set = Integer.parseInt(off_set_string);
         
@@ -377,8 +377,8 @@ public void EndSimulation(){
         String base_reg_string = parts[3].substring(2,length_temp-1);
         int base_addr_reg = Integer.parseInt(base_reg_string);
         int base_addr = reg.get(base_addr_reg);
-        
-        Data_Memory.put(base_addr + off_set , value);
+        int firstByte = (byte) value;  
+        Data_Memory.put(base_addr + off_set,firstByte);
         Program_CounterCpy +=4;
       // System.out.println("Memory location: " + Memory);
     }

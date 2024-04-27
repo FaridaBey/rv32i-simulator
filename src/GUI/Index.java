@@ -67,7 +67,7 @@ public class Index extends javax.swing.JFrame {
         Test1.setBackground(new java.awt.Color(255, 153, 0));
         Test1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         Test1.setForeground(new java.awt.Color(255, 255, 255));
-        Test1.setText("Factorial");
+        Test1.setText("Test 1");
         Test1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Test1ActionPerformed(evt);
@@ -77,7 +77,7 @@ public class Index extends javax.swing.JFrame {
         Test2.setBackground(new java.awt.Color(255, 153, 0));
         Test2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         Test2.setForeground(new java.awt.Color(255, 255, 255));
-        Test2.setText("String Copy");
+        Test2.setText("Test 2");
         Test2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Test2ActionPerformed(evt);
@@ -108,8 +108,9 @@ public class Index extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                     .addComponent(jLabel6)
                     .addComponent(jLabel7)
-                    .addComponent(Test1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Test2))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(Test2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Test1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -229,11 +230,8 @@ public class Index extends javax.swing.JFrame {
     private void Test1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Test1ActionPerformed
         // TODO add your handling code here:
         AssemblyCode.setText("");
-        StartingAddress.setText("96");
-        AssemblyCode.setText("addi x10,x10,2"+"\n"+"addi x2,x2,-8" + "\n"+ "sw x1,4 (x2)"+"\n" + "sw x10,0 (x2)" + "\n"+ "sltiu x5,x10,1"+"\n"+ "beq x5,x0,132"+"\n"+ "addi x10,x0,1"+"\n"+ "addi x2,x2,8"+"\n"+ "FENCE"+"\n"+ "addi x10,x10,-1"
-        +"\n"+ "jal x1,100" +"\n"+ "addi x5,x10,0" +"\n"+ "lw x10,0 (x2)"+"\n"+ "lw x1,4 (x2)"+"\n"+ "addi x2,x2,8"+"\n"+ "mul x10,x10,8"+"\n"+ "FENCE" //Needs to be reworked
-        
-        );
+     StartingAddress.setText("0");
+        AssemblyCode.setText("addi x1, x0, 10"+"\n"+"addi x20, x0, 2000" + "\n"+ "addi x2, x0, 20" + "\n" + "add x3, x2, x1" + "\n"+"sub x4, x1, x2" + "\n" + "sb x1, 0 (x20)" + "\n" + "sh x2, 4 (x20)" + "\n" + "sw x4, 8 (x20)" + "\n" + "lb x10, 8 (x20)" + "\n" + "lh x10, 8 (x20)" + "\n" + "lw x10, 8 (x20)" + "\n" + "lbu x10, 8 (x20)" + "\n" + "lhu x10, 8 (x20)" + "\n" + "slli x11, x1, 2" + "\n" + "srli x12, x1,2" + "\n" + "srai x13, x1, 2");
         
     }//GEN-LAST:event_Test1ActionPerformed
 
@@ -248,9 +246,9 @@ public class Index extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         AssemblyCode.setText("");
-        
-        AssemblyCode.setText("addi x2,x2,-4" + "\n"+ "sw x8,0 (x2)"+"\n" + "add x8,x0,x0" + "\n"+ "add x6,x8,x11"+"\n"+ "lbu x7,0 (x6)"+"\n"+ "add x28,x8,x10"+"\n"+ "sb x7,0 (x28)"+"\n"+ "beq x6,x0,144"+"\n"+ "addi x8,x8,1"
-        +"\n"+ "beq x0,x0,112" +"\n"+ "lw x8,0 (x2)" +"\n"+ "addi x2,x2,4"+"\n"+ "lw x1,4 (x2)"+"\n"+ "ECALL"); //Needs to be reworked
+        StartingAddress.setText("100");
+        AssemblyCode.setText("lui x1,20" + "\n"+ "auipc x2,20"+"\n" + "addi x3,x3,10" + "\n"+ "beq x4,x3,124"+"\n"+ "addi x4,x4,1 "+"\n"+ "jal x5,112"+"\n"+ "addi x6,x6,5"+"\n"+ "addi x7,x7,2"+"\n"+ "blt x6,x7,144"
+        +"\n"+ "addi x6,x6,-1" +"\n"+ "jal x8,132" +"\n"+ "addi x9,x9,10"+"\n"+ "addi x10,x10,7"+"\n"+ "bne x9,x10,164"+"\n"+"addi x10,x10,1"+"\n"+"jal x11,152"+"\n"+"addi x12,x12,1"+"\n"+"addi x13,x13,3"+"\n"+"bge x12,x13,184" +"\n"+"addi x12,x12,1"+"\n"+"jal x14,172"+"\n"+"addi x15,x15,5"+"\n"+"addi x16,x16,2"+"\n"+"bltu x15,x16,204"+"\n"+"addi x15,x15,-1"+"\n"+"jal x18,192"+"\n"+"addi x19,x19,1"+"\n"+"addi x20,x20,3"+"\n"+"bgeu x19,x20,224"+"\n"+"addi x19,x19,1"+"\n"+"jal x21,212"+"\n"+"ECALL"); //Needs to be reworked
         
     }//GEN-LAST:event_Test2ActionPerformed
 
