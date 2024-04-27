@@ -1113,6 +1113,7 @@ if(!Instruction_Memory.isEmpty()){
 }
     else{Memory2.append("Instruction Memory is Empty");}
 }
+//commit
 public Viewer(String Assembly_Code, int Program_Counter, Map <Integer, Integer> DM){      
       initComponents(); // initializes the GUI must always be at top
       Assembly_CodeCpy = Assembly_Code;
