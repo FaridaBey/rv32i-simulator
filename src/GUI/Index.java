@@ -284,14 +284,14 @@ public class Index extends javax.swing.JFrame {
         // TODO add your handling code here:
         AssemblyCode.setText("");
         StartingAddress.setText("0");
-        AssemblyCode.setText("addi x1, x0, 1" + "\n" + "addi x2, x0, 2" + "\n" + "addi x3, x0, -5" + "\n" + "addi x4, x0, 2" + "\n" + "slti x10, x1, 5" + "\n" + "slti x10, x1, -5" + "\n" + "sltiu x11, x1, 5" + "\n" + "sltiu x11, x1, -5" + "\n" + "slt x12,x1, x3" + "\n" + "slt x12, x1, x2" + "\n" + "sltu x13, x1, x3" + "\n" + "sltu x13, x1, x2 " + "\n" + "sll x14,x2,x4");
+        AssemblyCode.setText("addi x1, x0, 1" + "\n" + "addi x2, x0, 2" + "\n" + "addi x3, x0, -5" + "\n" + "addi x4, x0, 2" + "\n" + "slti x10, x1, 5" + "\n" + "slti x10, x1, -5" + "\n" + "sltiu x11, x1, 5" + "\n" + "sltiu x11, x1, -5" + "\n" + "slt x12,x1, x3" + "\n" + "slt x12, x1, x2" + "\n" + "sltu x13, x1, x3" + "\n" + "sltu x13, x1, x2 " + "\n" + "sll x14,x2,x4"+"\n"+"EBREAK");
     }//GEN-LAST:event_Test3ActionPerformed
 
     private void Test4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Test4ActionPerformed
         // TODO add your handling code here:
         AssemblyCode.setText("");
         StartingAddress.setText("0");
-        AssemblyCode.setText("addi x1, x0, 20" + "\n" + "addi x2, x0, 30" + "\n" + "addi x3, x0, 2" + "\n" + "xori x10, x1, 12" + "\n" + "ori x11, x1, 12" + "\n" + "andi x12, x1, 12"+ "\n" + "xor x13, x1, x2" + "\n" + "or x14, x1, x2" + "\n" + "and x15, x1, x2" + "\n" + "srl x16, x2, x3" + "\n" + "sra x17, x2, x3"+"ECALL");
+        AssemblyCode.setText("addi x1, x0, 20" + "\n" + "addi x2, x0, 30" + "\n" + "addi x3, x0, 2" + "\n" + "xori x10, x1, 12" + "\n" + "ori x11, x1, 12" + "\n" + "andi x12, x1, 12"+ "\n" + "xor x13, x1, x2" + "\n" + "or x14, x1, x2" + "\n" + "and x15, x1, x2" + "\n" + "srl x16, x2, x3" + "\n" + "sra x17, x2, x3"+"\n"+"FENCE");
     }//GEN-LAST:event_Test4ActionPerformed
 
     /**
