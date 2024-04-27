@@ -967,6 +967,32 @@ public void EndSimulation(){
         reg.set(rd, reg.get(rd) & reg.get(imm_se));
     }
             
+    public void c_addi(String instr)
+    {
+        String[] assembly_line_split = instr.split("[\\s,]+");
+    
+        int nzimm = 0;
+        
+        String rd_num_string = assembly_line_split[1].substring(1);
+        int rd = Integer.parseInt(rd_num_string);
+        
+        String imm_string = assembly_line_split[2].substring(1);
+        int imm = Integer.parseInt(imm_string);
+        
+        if(rd == 0){
+          JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
+          return;
+          }
+        int nzimm_se = 0;
+        
+    if ((nzimm & (1 << 5)) != 0) {
+        nzimm |= 0xC0;
+        nzimm_se = nzimm;
+        }
+        
+        rd = rd + nzimm_se;
+        reg.set(rd, reg.get(rd) + reg.get(nzimm_se));
+}
 
 //Processing Instructions
 public void ProcessInstruction(String instruction){
@@ -1114,8 +1140,12 @@ switch(opcode){
     break;
     //c.li
     case "c.li" : {c_li(instruction); }
-    break;//c.andi
+    break;
+    //c.andi
     case "c.andi" : {c_andi(instruction); }
+    break;
+    // c.ADDi
+    case "c.addi" : {c_addi(instruction); }
     break;
     case "FENCE": {EndSimulation(); ProgressBar.setValue(ProgressBar.getMaximum()); Complete.setText("HALTING INSTRUCTION (FENCE)"); Complete.setForeground(Color.red);}
     break;
@@ -1562,7 +1592,7 @@ public Viewer(String Assembly_Code, int Program_Counter, Map <Integer, Integer> 
                
             }
         });
-    
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AssemblyCode;
@@ -1594,3 +1624,4 @@ public Viewer(String Assembly_Code, int Program_Counter, Map <Integer, Integer> 
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
+}
