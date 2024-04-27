@@ -1,0 +1,1 @@
+We've included our test programs covering all supported instructions, including loops. Each program is integrated into the GUI as buttons in the test section for easy access and evaluation by the user. This setup allows for comprehensive testing and demonstration of the simulator's capabilities within the graphical interface.
