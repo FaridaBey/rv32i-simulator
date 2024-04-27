@@ -74,7 +74,7 @@ public void EndSimulation(){
           JOptionPane.showMessageDialog(this, "ERROR: Cannot Use x0 as it is a Constant Register!", "Constant Register",  JOptionPane.ERROR_MESSAGE);
           return;
           }
-         reg.add(regd, immShifted);
+         reg.set(regd, immShifted);
    }
    //3
    public void JAL (String instr) {

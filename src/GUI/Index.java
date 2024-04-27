@@ -220,7 +220,7 @@ public class Index extends javax.swing.JFrame {
         }
         catch(NumberFormatException e){
         
-         JOptionPane.showMessageDialog(this, "Must Enter Starting Address" , "Starting Address Error",  JOptionPane.WARNING_MESSAGE);
+         JOptionPane.showMessageDialog(this, "Must Enter Starting Address" , "Empty Starting Address",  JOptionPane.WARNING_MESSAGE);
         
         }
      }
@@ -229,7 +229,8 @@ public class Index extends javax.swing.JFrame {
     private void Test1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Test1ActionPerformed
         // TODO add your handling code here:
         AssemblyCode.setText("");
-        AssemblyCode.setText("addi x2,x2,-8" + "\n"+ "sw x1,4 (x2)"+"\n" + "sw x10,0 (x2)" + "\n"+ "sltiu x5,x10,1"+"\n"+ "beq x5,x0,132"+"\n"+ "addi x10,x0,1"+"\n"+ "addi x2,x2,8"+"\n"+ "jalr x28,0(x1)"+"\n"+ "addi x10,x10,-1"
+        StartingAddress.setText("96");
+        AssemblyCode.setText("addi x10,x10,2"+"\n"+"addi x2,x2,-8" + "\n"+ "sw x1,4 (x2)"+"\n" + "sw x10,0 (x2)" + "\n"+ "sltiu x5,x10,1"+"\n"+ "beq x5,x0,132"+"\n"+ "addi x10,x0,1"+"\n"+ "addi x2,x2,8"+"\n"+ "FENCE"+"\n"+ "addi x10,x10,-1"
         +"\n"+ "jal x1,100" +"\n"+ "addi x5,x10,0" +"\n"+ "lw x10,0 (x2)"+"\n"+ "lw x1,4 (x2)"+"\n"+ "addi x2,x2,8"+"\n"+ "mul x10,x10,8"+"\n"+ "FENCE" //Needs to be reworked
         
         );
@@ -245,7 +246,9 @@ public class Index extends javax.swing.JFrame {
 
     private void Test2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Test2ActionPerformed
         // TODO add your handling code here:
-          AssemblyCode.setText("");
+
+        AssemblyCode.setText("");
+        
         AssemblyCode.setText("addi x2,x2,-4" + "\n"+ "sw x8,0 (x2)"+"\n" + "add x8,x0,x0" + "\n"+ "add x6,x8,x11"+"\n"+ "lbu x7,0 (x6)"+"\n"+ "add x28,x8,x10"+"\n"+ "sb x7,0 (x28)"+"\n"+ "beq x6,x0,144"+"\n"+ "addi x8,x8,1"
         +"\n"+ "beq x0,x0,112" +"\n"+ "lw x8,0 (x2)" +"\n"+ "addi x2,x2,4"+"\n"+ "lw x1,4 (x2)"+"\n"+ "ECALL"); //Needs to be reworked
         
